@@ -5,7 +5,6 @@
 //  Created by Naif on 24/02/1447 AH.
 //
 
-
 struct LoginResponse: Codable {
     let success: Bool
     let user: User
