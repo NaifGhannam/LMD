@@ -25,7 +25,7 @@ struct testView: View {
             ScrollView (.horizontal){
                 HStack (spacing : 0){
                     ForEach(1...10 ,id : \.self){_ in
-                        Orders_On_General_Pool_Card()
+                        Orders_On_General_Pool_Card(name: "ahmad", orderID: "20000", CreatedAt: Date() , numberOfOrders: 1, RoadDistance: 19)
                         
                     }
                 }
