@@ -28,10 +28,10 @@ struct MyOrdersView: View {
 
             Spacer()
         }
-        .background(.gray.opacity(0.15))
     }
 }
 
 #Preview {
     MyOrdersView()
+        .background(.gray.opacity(0.15))
 }
