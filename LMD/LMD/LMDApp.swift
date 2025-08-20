@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct LMDApp: App {
+    
+    @StateObject private var viewModel = GeneralPoolViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            GeneralPoolView()
+                .environmentObject(viewModel)
         }
     }
 }

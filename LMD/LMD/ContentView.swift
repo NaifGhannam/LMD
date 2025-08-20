@@ -16,8 +16,6 @@ struct ContentView: View {
             
             VStack {
                 
-                Spacer()
-                
                 ZStack {
                     if selectedTab == "Home" {
                         
@@ -25,7 +23,7 @@ struct ContentView: View {
                         
                     } else if selectedTab == "Orders" {
                         
-                        Text("Page 2")
+                        MyOrdersView()
                         
                     } else if selectedTab == "History" {
                         
@@ -45,8 +43,9 @@ struct ContentView: View {
                 
                 MainTabView(selectedTab: $selectedTab)
             }
-            .padding(.vertical)
-            .ignoresSafeArea()
+            .padding(.bottom)
+            .background(.gray.opacity(0.15))
+            .ignoresSafeArea(edges: .bottom)
         }
     }
 }
