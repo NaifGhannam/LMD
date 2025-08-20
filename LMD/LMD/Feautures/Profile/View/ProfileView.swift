@@ -56,7 +56,7 @@ struct ProfileView: View {
                 settingsButton(image: "password2", title: "changePassword") {
                     print("Change password tapped")
                 }
-                settingsButton(image:"message.fill", title: "chat"){
+                settingsButton(image:"mdi_email", title: "chat"){
                     
                 }
                 
