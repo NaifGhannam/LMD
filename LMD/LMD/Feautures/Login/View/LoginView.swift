@@ -16,7 +16,7 @@ struct LoginView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 200, height: 250)
-                .padding(.bottom, )
+                .padding(.bottom)
             
             //Email TextField
             HStack{
