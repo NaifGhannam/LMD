@@ -8,31 +8,27 @@
 
 
 import Foundation
-
 enum APIEndpoint {
     case login
     case getUserOrders(id: Int)
     
     var authBaseURL: String {
-        return "https://zvutnjtnjwvtyntcyfcc.supabase.co"
+        return "https://wbyewodrizzecmhkcuil.supabase.co"
     }
     
     var path: String {
         switch self {
         case .login:
-            return "/login"
-            
+            return "/rest/v1/rpc/login_user"
         case .getUserOrders(let id):
-            return "/functions/v1/user-orders/\(id)"
+            return "/rest/v1/orders?id=eq.\(id)"
         }
     }
     
     var method: HTTPMethod {
         switch self {
         case .login: return .post
-            
-        case .getUserOrders:
-            return .get
+        case .getUserOrders: return .get
         }
     }
     

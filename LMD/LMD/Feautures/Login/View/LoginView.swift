@@ -18,56 +18,55 @@ struct LoginView: View {
                 .frame(width: 200, height: 250)
                 .padding(.bottom)
             
-            //Email TextField
-            HStack{
-                TextField("Email", text: $viewModel.email)
+            // Email
+            HStack {
+                TextField("Email", text: $viewModel.username)
                 Image(systemName: "person.fill")
                     .foregroundColor(.red)
             }
             .padding()
-            .overlay(content: {
-                RoundedRectangle(cornerRadius: 10).stroke(Color.red ,style: StrokeStyle(lineWidth: 2))
-            })
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.red, lineWidth: 2)
+            }
             
-             // Password SecureField
-            HStack{
+            // Password
+            HStack {
                 SecureField("Password", text: $viewModel.password)
                 Image(systemName: "key.fill")
                     .foregroundColor(.red)
             }
             .padding()
-            .overlay(content: {
-                RoundedRectangle(cornerRadius: 10).stroke(Color.red ,style: StrokeStyle(lineWidth: 2))
-            })
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.red, lineWidth: 2)
+            }
             
             if viewModel.isLoading {
                 ProgressView()
             }
             
             Button {
-                Task {
-                    await viewModel.login()
-                }
+                Task { await viewModel.login() }
             } label: {
                 Text("Login")
                     .foregroundStyle(.white)
-                    .frame( maxWidth: .infinity , maxHeight: 50)     .background(Color.red)
+                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .background(Color.red)
                     .cornerRadius(10)
                     .padding(.horizontal, 50)
-                    .padding(.top , 40)
+                    .padding(.top, 40)
             }
-  
-
+            
             if let error = viewModel.errorMessage {
                 Text(error).foregroundColor(.red)
             }
             
-            if viewModel.isLoggedIn {
-                Text("Logged in successfully")
-                Button("Logout") {
-                    viewModel.logout()
-                }
+            if viewModel.isLoggedIn, let user = viewModel.user {
+                Text("Welcome \(user.username)")
+                Text("Role: \(user.role)")
             }
+            
             Spacer()
         }
         .padding()

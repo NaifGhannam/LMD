@@ -14,7 +14,7 @@ struct LMDApp: App {
     
     var body: some Scene {
         WindowGroup {
-            GeneralPoolView()
+            LoginView()
                 .environmentObject(viewModel)
         }
     }

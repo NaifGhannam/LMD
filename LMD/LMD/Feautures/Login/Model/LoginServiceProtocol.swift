@@ -6,5 +6,5 @@
 //
 
 protocol LoginServiceProtocol {
-    func login(email : String , password : String) async throws -> LoginResponse
+    func login(username : String , password : String) async throws -> LoginResponse
 }

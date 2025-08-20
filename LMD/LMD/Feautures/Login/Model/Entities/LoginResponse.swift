@@ -7,17 +7,15 @@
 
 struct LoginResponse: Codable {
     let success: Bool
+    let message: String
     let user: User
-    let tokens: Tokens
 }
 
 struct User: Codable {
-    let id: String
+    let user_id: String
+    let username: String
     let email: String
+    let mobile_number: String
     let role: String
-}
-
-struct Tokens: Codable {
-    let access_token: String
-    let refresh_token: String
+    let created_at: String
 }
