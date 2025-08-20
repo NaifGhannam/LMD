@@ -34,11 +34,6 @@ final class NetworkManager {
             forHTTPHeaderField: "apikey"
         )
 
-        // Bearer token
-        request.setValue(
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndieWV3b2RyaXp6ZWNtaGtjdWlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1MjI5NDksImV4cCI6MjA3MTA5ODk0OX0.mBq9iQRLKeEXg1qV1VGMahw3LmNiP30-rKfCqoDIDEU",
-            forHTTPHeaderField: "Authorization"
-        )
 
         // Custom headers
         headers?.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
