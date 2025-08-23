@@ -10,32 +10,53 @@ import MapKit
 
 class GeneralPoolViewModel: ObservableObject {
     
+    @Published var searchText = ""
     @Published var locations: [Location]
     @Published var mapLocation: Location {
-        didSet {
-            updateMapRegion(location: mapLocation)
-        }
+        didSet { updateCamera(to: mapLocation) }
     }
-    @Published var mapRegion: MKCoordinateRegion = MKCoordinateRegion()
-    let mapSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+    
+    @Published var cameraPosition: MapCameraPosition
+    @Published var region: MKCoordinateRegion = .init()
+    
+    private let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     
     init() {
         let locations = LocationsDataService.locations
         self.locations = locations
-        self.mapLocation = locations.first!
-        self.updateMapRegion(location: locations.first!)
+        let first = locations.first!
+        self.mapLocation = first
         
+        let initialRegion = MKCoordinateRegion(center: first.coordinates, span: span)
+        self.region = initialRegion
+        self.cameraPosition = .region(initialRegion)
     }
     
-    private func updateMapRegion(location: Location) {
+    private func updateCamera(to location: Location) {
         withAnimation {
-            mapRegion = MKCoordinateRegion(center: location.coordinates, span: mapSpan)
+            let newRegion = MKCoordinateRegion(center: location.coordinates, span: span)
+            region = newRegion
+            cameraPosition = .region(newRegion)       
         }
     }
     
     func showNextLocation(location: Location) {
         withAnimation(.easeInOut) {
             mapLocation = location
+        }
+    }
+    
+    func filteredLocations() -> [Location] {
+        
+        let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !text.isEmpty else {
+            return locations
+        }
+        
+        return locations.filter {
+            $0.customerName.localizedCaseInsensitiveContains(text)
+            || $0.orderNo.localizedCaseInsensitiveContains(text)
         }
     }
 }

@@ -19,7 +19,8 @@ struct ContentView: View {
                 ZStack {
                     if selectedTab == "Home" {
                         
-                        Text("Page 1")
+                        GeneralPoolView()
+                            .environmentObject(GeneralPoolViewModel())
                         
                     } else if selectedTab == "Orders" {
                         
@@ -44,7 +45,7 @@ struct ContentView: View {
                 MainTabView(selectedTab: $selectedTab)
             }
             .padding(.bottom)
-            .background(.gray.opacity(0.15))
+            .background(.clear)
             .ignoresSafeArea(edges: .bottom)
         }
     }
