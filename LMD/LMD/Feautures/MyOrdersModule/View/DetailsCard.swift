@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DetailsCard: View {
     
-    let order: Order
+    let order: Order = Order(orderId: 1, orderNumber: "# 181818", orderDate: "10/10/2025", status: OrderStatus(name: "confirmed", colorCode: "PrimaryGreen"), customerName: "Hanan", address: "King Fahd St 123")
     
     var body: some View {
         VStack {
@@ -70,11 +70,10 @@ struct DetailsCard: View {
         .padding()
         .background(Color.white)
         .cornerRadius(5)
-        .padding(.horizontal, 25)
         .shadow(radius: 3)
     }
 }
 
 #Preview {
-    DetailsCard(order: Order(orderId: 1, orderNumber: "# 181818", orderDate: "10/10/2025", status: OrderStatus(name: "confirmed", colorCode: "PrimaryGreen"), customerName: "Hanan", address: "King Fahd St 123"))
+    DetailsCard()
 }

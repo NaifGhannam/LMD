@@ -22,7 +22,8 @@ struct MyOrdersView: View {
                 
                 ForEach(viewModel.filterData()) { order in
                    
-                    DetailsCard(order: order)
+                    DetailsCard()
+                        .padding(.horizontal, 25)
                 }
             }
 
