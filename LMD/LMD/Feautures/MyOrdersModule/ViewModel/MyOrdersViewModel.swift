@@ -7,12 +7,16 @@
 
 import Foundation
 
+@MainActor
 class MyOrdersViewModel: ObservableObject {
     
     @Published var searchText: String = ""
     @Published var orders: [Order] = []
+    @Published var users: [Users] = []
+    @Published var ordersData: OrdersData?
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var message: String?
     
     private let orderService: MyOrdersServiceProtocol
     
@@ -22,14 +26,50 @@ class MyOrdersViewModel: ObservableObject {
     
     func fetchMyOrders() async {
         
-        isLoading = true
-        errorMessage = nil
+        self.isLoading = true
+        self.errorMessage = nil
         
         do {
             
-            let result = try await orderService.getMyOrders(id: 1)
-            self.orders = result.orders
+            let result = try await orderService.getMyOrders()
+            self.orders = result.data.orders
+            self.ordersData = result.data
             
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+        
+        self.isLoading = false
+    }
+    
+    func updateOrderStatues(orderId: String, statusId: Int) async {
+        
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        do {
+            
+            let result = try await orderService.updateOrderStatues(orderId: orderId, statusId: statusId)
+            
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+        
+        self.isLoading = false
+    }
+    
+    func getAllUsers() async {
+        
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        do {
+            
+            print("-------------------------------------------------------")
+            let result = try await orderService.getAllUsers()
+            self.users = result.data
+            print(result.success)
+        
         } catch {
             self.errorMessage = error.localizedDescription
         }

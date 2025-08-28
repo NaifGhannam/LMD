@@ -11,6 +11,8 @@ import MapKit
 struct OrderDetailsView: View {
     
     @EnvironmentObject private var viewModel: GeneralPoolViewModel
+    let order: Order
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         
@@ -18,13 +20,19 @@ struct OrderDetailsView: View {
             
            HStack {
                
+               Button(action: { dismiss() }) {
+                   
+                   Image(systemName: "chevron.backward")
+               }
+               .padding(.trailing, 20)
+               
                Text("My Orders")
                    .font(.system(size: 25, weight: .semibold))
-                   .foregroundColor(Color.white)
                
                Spacer()
                
            }
+           .foregroundColor(Color.white)
            .padding([.horizontal, .bottom], 20)
            .frame(maxWidth: .infinity)
            
@@ -58,16 +66,13 @@ struct OrderDetailsView: View {
                }
            }
            
-           DetailsCard()
+           DetailsCard(order: order, viewModel: MyOrdersViewModel())
                .padding(12)
                .padding(.bottom, 20)
         }
        .background(Color("PrimaryRed"))
        .ignoresSafeArea(edges: .bottom)
+       .navigationBarHidden(true)
+       .navigationBarBackButtonHidden(true)
     }
-}
-
-#Preview {
-    OrderDetailsView()
-        .environmentObject(GeneralPoolViewModel())
 }

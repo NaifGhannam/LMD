@@ -8,24 +8,45 @@
 import Foundation
 
 enum APIEndpoint {
+    
     case login
-    case getUserOrders(id: Int)
+    case getUserOrders
+    case updateOrderStatues
+    case getAllUsers
     
     var authBaseURL: String {
-        "https://kgomwyksxjqtcjwlzbsp.supabase.co/functions/v1/"
+        return "https://kgomwyksxjqtcjwlzbsp.supabase.co/"
     }
     
     var path: String {
         switch self {
-        case .login: return "login"
-        case .getUserOrders(let id): return "/rest/v1/orders?id=eq.\(id)"
+        case .login:
+            return "functions/v1/login"
+            
+        case .getUserOrders:
+            return "functions/v1/orders-list?page=6&limit=5"
+            
+        case .updateOrderStatues:
+            return "functions/v1/update-order-status"
+            
+        case .getAllUsers:
+            return "functions/v1/get-all-users"
         }
     }
     
     var method: HTTPMethod {
         switch self {
-        case .login: return .post
-        case .getUserOrders: return .get
+        case .login:
+            return .post
+            
+        case .getUserOrders:
+            return .get
+            
+        case .updateOrderStatues:
+            return .post
+            
+        case .getAllUsers:
+            return .get
         }
     }
     
