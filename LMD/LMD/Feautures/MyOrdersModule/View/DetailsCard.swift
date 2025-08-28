@@ -9,7 +9,11 @@ import SwiftUI
 
 struct DetailsCard: View {
     
-    let order: Order = Order(orderId: 1, orderNumber: "# 181818", orderDate: "10/10/2025", status: OrderStatus(name: "confirmed", colorCode: "PrimaryGreen"), customerName: "Hanan", address: "King Fahd St 123")
+    let order: Order
+    @ObservedObject var viewModel: MyOrdersViewModel
+    @State private var pendingAction: OrderAction?
+    @State private var isUpdating = false
+    @State private var isShowingSheet = false
     
     var body: some View {
         VStack {
@@ -18,7 +22,7 @@ struct DetailsCard: View {
                 VStack(spacing: 7) {
                     Image(systemName: "location.north.fill")
                     
-                    Text("17.00")
+                    Text("\(order.distanceKm ?? 0.0, specifier: "%.1f")")
                 }
                 .foregroundColor(.white)
                 .padding()
@@ -27,11 +31,12 @@ struct DetailsCard: View {
                 
                 VStack(alignment: .leading, spacing: 0) {
                     
-                    Text("# 181818")
+                    Text("# \(order.orderNumber)")
+                        .font(.system(size: 14))
                         .foregroundColor(.gray.opacity(0.7))
                         .bold()
                     
-                    Text("Hanan")
+                    Text(order.customerName)
                     
                     Text("new")
                         .foregroundColor(Color("PrimaryRed"))
@@ -40,12 +45,39 @@ struct DetailsCard: View {
                 Spacer()
                 
                 VStack {
-                    Text("confirmed")
-                        .foregroundColor(Color("PrimaryGreen"))
-                        .bold()
                     
-                    Spacer()
-                        .frame(height: 20)
+                    if order.statusID != OrderStatusEnum.done.rawValue {
+                        
+                        HStack {
+                            
+                            Text(order.orderStatuses.statusName)
+                                .foregroundColor(Color("PrimaryGreen"))
+                                .bold()
+                            
+                            Menu {
+                                Button(action: {
+                                    Task {
+                                        await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.canceled.rawValue)
+                                    }
+                                }) {
+                                    Text("Cancel")
+                                }
+                                
+                                Button(action: {
+                                    isShowingSheet.toggle()
+                                }) {
+                                    Text("Reassign")
+                                }
+                            } label: {
+                                Image("more")
+                                    .resizable()
+                                    .frame(width: 15, height: 15)
+                            }
+                        }
+                        
+                        Spacer()
+                            .frame(height: 20)
+                    }
                     
                     HStack(spacing: 1) {
                         Text("100.0")
@@ -58,11 +90,44 @@ struct DetailsCard: View {
             
             HStack {
                 
-                CustomButton(title: "Order Details")
+                NavigationLink(destination: OrderDetailsView(order: order).environmentObject(GeneralPoolViewModel())) {
                     
-                CustomButton(title: "Pick Order")
+                    Text("Order Details")
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(8)
+                        .background(Color("PrimaryRed"))
+                        .cornerRadius(10)
+                }
+                
+                if order.statusID != OrderStatusEnum.canceled.rawValue,
+                   let act = action(for: order.statusID) {
+                    
+                    PrimaryActionButton(title: act.title) {
+                        pendingAction = act
+                    }
+                    .alert(item: $pendingAction) { act in
+                        Alert(
+                            title: Text(act.alertTitle),
+                            message: Text(act.alertMessage),
+                            primaryButton: .default(Text("OK"), action: {
+                                Task { await run(act) }
+                            }),
+                            secondaryButton: .cancel()
+                        )
+                    }
+                }
             }
             .padding(.bottom)
+            
+            if order.statusID == OrderStatusEnum.pickup.rawValue || order.statusID == OrderStatusEnum.start.rawValue {
+                
+                CustomButton(title: "Delivery Failed") {
+                    Task {
+                        await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.failed.rawValue)
+                    }
+                }
+            }
             
             CustomButton(showIcon: true, title: "Call")
         }
@@ -71,9 +136,32 @@ struct DetailsCard: View {
         .background(Color.white)
         .cornerRadius(5)
         .shadow(radius: 3)
+        .sheet(isPresented: $isShowingSheet) {
+            VStack {
+                ForEach(viewModel.users, id: \.id) { user in
+                    
+                    Button(action: { Task {
+                        await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.reassigned.rawValue)
+                    } }) {
+                        Text(user.name)
+                    }
+                }
+            }
+        }
+        .task {
+            await viewModel.getAllUsers()
+        }
     }
-}
-
-#Preview {
-    DetailsCard()
+    
+    @MainActor
+    private func run(_ act: OrderAction) async {
+        isUpdating = true
+        defer { isUpdating = false }
+        do {
+            let _ = await viewModel.updateOrderStatues(
+                orderId: order.orderID,
+                statusId: act.nextStatus.rawValue
+            )
+        }
+    }
 }

@@ -9,5 +9,7 @@ import Foundation
 
 protocol MyOrdersServiceProtocol {
     
-    func getMyOrders(id: Int) async throws -> OrdersResponse
+    func getMyOrders() async throws -> OrdersResponse
+    func updateOrderStatues(orderId: String, statusId: Int) async throws -> OrderStatusUpdateResponse
+    func getAllUsers() async throws -> UsersResponse
 }

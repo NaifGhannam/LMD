@@ -9,5 +9,6 @@ import Foundation
 
 struct OrdersResponse: Codable {
     
-    let orders: [Order]
+    let success: Bool
+    let data: OrdersData
 }

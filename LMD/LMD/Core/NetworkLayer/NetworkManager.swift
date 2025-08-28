@@ -25,14 +25,14 @@ final class NetworkManager {
 
         // Default headers
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        if let token = TokenStore.shared.accessToken {
-//            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-//        }
+        //if let token = TokenStore.shared.accessToken {
+            request.setValue("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMGRiNWI1NC04ODhkLTRhNzItYTkxYy04ZDA0YzRjNDgzYmEiLCJlbWFpbCI6InRheW1hbkBudGdjbGFyaXR5LmNvbSIsImV4cCI6MTc1NjM4OTkxMCwiaWF0IjoxNzU2Mzg2MzEwLCJ0eXBlIjoiYWNjZXNzIn0.WeMVRsqPaTFYifdyj70WMqrjGJ1fi-tRzmmmkbHDfyI", forHTTPHeaderField: "Authorization")
+        //}
         // Supabase API key
-        request.setValue(
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndieWV3b2RyaXp6ZWNtaGtjdWlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1MjI5NDksImV4cCI6MjA3MTA5ODk0OX0.mBq9iQRLKeEXg1qV1VGMahw3LmNiP30-rKfCqoDIDEU",
-            forHTTPHeaderField: "apikey"
-        )
+//        request.setValue(
+//            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndieWV3b2RyaXp6ZWNtaGtjdWlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1MjI5NDksImV4cCI6MjA3MTA5ODk0OX0.mBq9iQRLKeEXg1qV1VGMahw3LmNiP30-rKfCqoDIDEU",
+//            forHTTPHeaderField: "apikey"
+//        )
 
 
         // Custom headers

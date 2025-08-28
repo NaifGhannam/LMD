@@ -13,21 +13,31 @@ struct MyOrdersView: View {
     
     var body: some View {
         
-        VStack {
-            
-            MyOrdersViewHeader(viewModel: viewModel)
-                .padding(.bottom, 20)
-            
-            VStack(spacing: 20) {
+        NavigationStack {
+          
+            VStack(spacing: 0) {
                 
-                ForEach(viewModel.filterData()) { order in
-                   
-                    DetailsCard()
-                        .padding(.horizontal, 25)
+                MyOrdersViewHeader(viewModel: viewModel)
+                    
+                ScrollView {
+                    VStack(spacing: 20) {
+                        
+                        ForEach(viewModel.filterData(), id: \.orderID) { order in
+                           
+                            DetailsCard(order: order, viewModel: viewModel)
+                                .padding(.horizontal, 25)
+                        }
+                    }
+                    .padding(.top, 15)
                 }
-            }
 
-            Spacer()
+                Spacer()
+                    .frame(height: 30)
+            }
+            .task {
+                await viewModel.fetchMyOrders()
+            }
+            .ignoresSafeArea(edges: .bottom)
         }
     }
 }
