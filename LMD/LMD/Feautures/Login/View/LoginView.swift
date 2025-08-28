@@ -20,7 +20,7 @@ struct LoginView: View {
             
             // Email
             HStack {
-                TextField("Email", text: $viewModel.username)
+                TextField("Email", text: $viewModel.email)
                 Image(systemName: "person.fill")
                     .foregroundColor(.red)
             }
@@ -61,10 +61,15 @@ struct LoginView: View {
             if let error = viewModel.errorMessage {
                 Text(error).foregroundColor(.red)
             }
-            
-            if viewModel.isLoggedIn, let user = viewModel.user {
-                Text("Welcome \(user.username)")
-                Text("Role: \(user.role)")
+            // Display logged in user info
+            if let user = viewModel.loggedInUser?.user {
+                VStack(spacing: 5) {
+                    Text("Logged in as:")
+                        .font(.headline)
+                    Text(user.fullName)
+                        .font(.subheadline)
+                }
+                .padding(.top)
             }
             
             Spacer()

@@ -6,11 +6,12 @@
 //
 
 import Foundation
-
 final class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
-
+    
+    private let serviceName = "com.example.myapp"
+    
     func request<T: Decodable>(
         endpoint: APIEndpoint,
         body: Encodable? = nil,
@@ -19,38 +20,55 @@ final class NetworkManager {
         guard let url = URL(string: endpoint.url) else {
             throw NetworkError.invalidURL
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
-
+        
         // Default headers
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        if let token = TokenStore.shared.accessToken {
-//            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-//        }
-        // Supabase API key
-        request.setValue(
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndieWV3b2RyaXp6ZWNtaGtjdWlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1MjI5NDksImV4cCI6MjA3MTA5ODk0OX0.mBq9iQRLKeEXg1qV1VGMahw3LmNiP30-rKfCqoDIDEU",
-            forHTTPHeaderField: "apikey"
-        )
+        var allHeaders: [String: String] = [
+            "Content-Type": "application/json"
+        ]
+        
+        // Authorization
+        if endpoint.requiresAuth {
+            if let tokenData = KeychainHelper.read(service: serviceName, account: "accessToken"),
+               let token = String(data: tokenData, encoding: .utf8) {
+                allHeaders["Authorization"] = "Bearer \(token)"
+            } else {
+                throw NetworkError.unauthorized
+            }
+        } else {
+            let initialToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtnb213eWtzeGpxdGNqd2x6YnNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3ODQ0NTEsImV4cCI6MjA3MTM2MDQ1MX0.g0JTJ4fftJum44D3gDJHwnoXK0XBLmWnsRbQcSVO5zs"
+            allHeaders["Authorization"] = "Bearer \(initialToken)"
+        }
 
-
-        // Custom headers
-        headers?.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
-
+        
+        // Merge custom headers
+        if let headers = headers {
+            for (key, value) in headers {
+                allHeaders[key] = value
+            }
+        }
+        
+        for (key, value) in allHeaders {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        
         // Request body
         if let body = body {
             request.httpBody = try JSONEncoder().encode(body)
         }
-
+        
         let (data, response) = try await URLSession.shared.data(for: request)
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.unknown
         }
+        
         guard 200..<300 ~= httpResponse.statusCode else {
             throw NetworkError.requestFailed(httpResponse.statusCode)
         }
-
+        
         do {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
