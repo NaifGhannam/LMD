@@ -31,7 +31,7 @@ final class NetworkManager {
         
         // Authorization
         if endpoint.requiresAuth {
-            if let tokenData = KeychainHelper.read(service: serviceName, account: "accessToken"),
+            if let tokenData = KeychainHelper.shared.read(service: serviceName, account: "accessToken"),
                let token = String(data: tokenData, encoding: .utf8) {
                 allHeaders["Authorization"] = "Bearer \(token)"
             } else {

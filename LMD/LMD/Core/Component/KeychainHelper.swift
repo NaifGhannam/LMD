@@ -7,8 +7,11 @@
 import Foundation
 import Security
 
-struct KeychainHelper {
-    static func save(_ data: Data, service: String, account: String) {
+final class KeychainHelper {
+    static let shared = KeychainHelper()
+    private init() {}
+    
+    func save(_ data: Data, service: String, account: String) {
         let query: [String: Any] = [
             kSecClass as String       : kSecClassGenericPassword,
             kSecAttrService as String : service,
@@ -16,11 +19,14 @@ struct KeychainHelper {
             kSecValueData as String   : data
         ]
         
+        // Delete old item if exists
         SecItemDelete(query as CFDictionary)
+        
+        // Add new item
         SecItemAdd(query as CFDictionary, nil)
     }
     
-    static func read(service: String, account: String) -> Data? {
+    func read(service: String, account: String) -> Data? {
         let query: [String: Any] = [
             kSecClass as String       : kSecClassGenericPassword,
             kSecAttrService as String : service,
@@ -34,7 +40,7 @@ struct KeychainHelper {
         return result as? Data
     }
     
-    static func delete(service: String, account: String) {
+    func delete(service: String, account: String) {
         let query: [String: Any] = [
             kSecClass as String       : kSecClassGenericPassword,
             kSecAttrService as String : service,
