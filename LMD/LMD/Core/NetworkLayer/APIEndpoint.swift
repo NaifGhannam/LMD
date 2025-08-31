@@ -52,8 +52,18 @@ enum APIEndpoint {
     
     var requiresAuth: Bool {
         switch self {
-        case .login: return false
-        case .getUserOrders: return true
+        case .login:
+            return false
+        
+        case .getUserOrders:
+            return true
+        
+        case .updateOrderStatues:
+            return true
+        
+        case .getAllUsers:
+            return true
+            
         }
     }
     
