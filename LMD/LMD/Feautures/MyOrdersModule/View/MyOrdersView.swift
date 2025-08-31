@@ -30,9 +30,6 @@ struct MyOrdersView: View {
                     }
                     .padding(.top, 15)
                 }
-
-                Spacer()
-                    .frame(height: 30)
             }
             .task {
                 await viewModel.fetchMyOrders()

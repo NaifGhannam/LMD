@@ -14,6 +14,8 @@ struct DetailsCard: View {
     @State private var pendingAction: OrderAction?
     @State private var isUpdating = false
     @State private var isShowingSheet = false
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.openURL) private var openURL
     
     var body: some View {
         VStack {
@@ -129,7 +131,9 @@ struct DetailsCard: View {
                 }
             }
             
-            CustomButton(showIcon: true, title: "Call")
+            CustomButton(showIcon: true, title: "Call") {
+                call("+966 55 123 4567")
+            }
         }
         .frame(maxWidth: .infinity)
         .padding()
@@ -140,13 +144,17 @@ struct DetailsCard: View {
             VStack {
                 ForEach(viewModel.users, id: \.id) { user in
                     
-                    Button(action: { Task {
-                        await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.reassigned.rawValue)
-                    } }) {
+                    Button(action: {
+                        Task {
+                            await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.reassigned.rawValue, assignedAgentId: user.id)
+                        }
+                        dismiss()
+                    }) {
                         Text(user.name)
                     }
                 }
             }
+            .presentationDetents([.height(UIScreen.main.bounds.height * 0.5)])
         }
         .task {
             await viewModel.getAllUsers()
@@ -164,4 +172,12 @@ struct DetailsCard: View {
             )
         }
     }
+    
+    private func call(_ raw: String) {
+            let digits = raw.filter { "+0123456789".contains($0) } // sanitize
+            guard let url = URL(string: "tel://\(digits)"),
+                  UIApplication.shared.canOpenURL(url)     // real device only
+            else { return }
+            openURL(url)
+        }
 }

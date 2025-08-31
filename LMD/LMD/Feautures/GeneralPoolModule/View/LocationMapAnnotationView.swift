@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LocationMapAnnotationView: View {
     
-    let location: Location
+    let location: Order
     let isSelected: Bool
     let onTap: (() -> ())?
     

@@ -10,6 +10,6 @@ import Foundation
 protocol MyOrdersServiceProtocol {
     
     func getMyOrders() async throws -> OrdersResponse
-    func updateOrderStatues(orderId: String, statusId: Int) async throws -> OrderStatusUpdateResponse
+    func updateOrderStatues(orderId: String, statusId: Int, assignedAgentId: String?) async throws -> OrderStatusUpdateResponse
     func getAllUsers() async throws -> UsersResponse
 }

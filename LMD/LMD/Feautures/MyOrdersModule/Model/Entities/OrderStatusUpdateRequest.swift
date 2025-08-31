@@ -11,9 +11,11 @@ struct OrderStatusUpdateRequest: Codable {
     
     let orderID: String
     let statusID: Int
+    let assignedAgentId: String?
     
     enum CodingKeys: String, CodingKey {
         case orderID = "order_id"
         case statusID = "status_id"
+        case assignedAgentId = "assigned_agent_id"
     }
 }

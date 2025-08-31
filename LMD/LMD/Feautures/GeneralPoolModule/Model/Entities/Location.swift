@@ -5,18 +5,15 @@
 //  Created by Tahani on 25/02/1447 AH.
 //
 
-import Foundation
-import MapKit
+import CoreLocation
 
-struct Location: Identifiable, Equatable {
-    
-    let id = UUID().uuidString
-    let customerName: String
-    let orderNo: String
-    let coordinates: CLLocationCoordinate2D
-    
-    static func == (lhs: Location, rhs: Location) -> Bool {
-        return lhs.id == rhs.id
+extension Order: Identifiable {
+    var id: String { orderID }
+}
+
+extension Order {
+    var coordinate2D: CLLocationCoordinate2D {
+        .init(latitude: coordinates.latitude, longitude: coordinates.longitude)
     }
 }
 
