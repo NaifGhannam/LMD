@@ -14,6 +14,19 @@ struct Orders_On_General_Pool_Card : View {
     @State var  numberOfOrders  : Int?
     @State var RoadDistance : Double?
     
+    private var createdDate: Date? {
+           let formatter = ISO8601DateFormatter()
+           formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+           return formatter.date(from: CreatedAt)
+       }
+       
+       private var timeAgo: String {
+           guard let date = createdDate else { return "unknown time" }
+           let formatter = RelativeDateTimeFormatter()
+           formatter.unitsStyle = .full
+           return formatter.localizedString(for: date, relativeTo: Date())
+       }
+    
     var body: some View {
         VStack {
             ZStack {
@@ -49,10 +62,10 @@ struct Orders_On_General_Pool_Card : View {
                              .font(.callout)
                                .fontWeight(.regular)
                                .foregroundStyle(.secondary)
-                         Text("orderd at \(CreatedAt)")
-                             .font(.callout)
-                               .fontWeight(.regular)
-                               .foregroundStyle(.secondary)
+                         Text("ordered \(timeAgo)")
+                                                       .font(.callout)
+                                                       .fontWeight(.regular)
+                                                       .foregroundStyle(.secondary)
 
                            Text("items in order (\(numberOfOrders))")
                              .font(.caption)
