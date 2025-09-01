@@ -22,7 +22,7 @@ enum APIEndpoint {
     var path: String {
         switch self {
         case .login:
-            return "/rest/v1/rpc/login_user"
+            return "functions/v1/login"
             
         case .getUserOrders:
             return "functions/v1/orders-list?page=6&limit=5"
@@ -40,7 +40,8 @@ enum APIEndpoint {
     
     var method: HTTPMethod {
         switch self {
-        case .login: return .post
+        case .login:
+            return .post
             
         case .getUserOrders:
             return .get
@@ -56,7 +57,24 @@ enum APIEndpoint {
         }
     }
     
-    var url: String {
-        return authBaseURL + path
+    var requiresAuth: Bool {
+        switch self {
+        case .login:
+            return false
+        
+        case .getUserOrders:
+            return true
+        
+        case .updateOrderStatues:
+            return true
+        
+        case .getAllUsers:
+            return true
+            
+        case .refreshToken:
+            return false 
+        }
     }
+    
+    var url: String { authBaseURL + path }
 }

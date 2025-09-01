@@ -32,8 +32,7 @@ struct ContentView: View {
                         
                     } else if selectedTab == "Logs" {
                         
-                        Text("Page 4")
-                        
+                        testLogoutView()
                     } else {
                         
                         Text("Page 5")

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RefreshResponse: Decodable {
+struct RefreshResponse: Codable {
     let success: Bool
     let data: RefreshData
 }

@@ -4,63 +4,116 @@
 //
 //  Created by Naif on 24/02/1447 AH.
 //
+//import Foundation
+//import Security
+//
+//final class KeychainHelper {
+//    static let shared = KeychainHelper()
+//    private init() {}
+//    
+//    func save(_ data: String, service: String, account: String) {
+//        let query: [String: Any] = [
+//            kSecClass as String       : kSecClassGenericPassword,
+//            kSecAttrService as String : service,
+//            kSecAttrAccount as String : account,
+//            kSecValueData as String   : data
+//        ]
+//        
+//        // Delete old item if exists
+//        SecItemDelete(query as CFDictionary)
+//        
+//        // Add new item
+//        SecItemAdd(query as CFDictionary, nil)
+//    }
+//    
+//    func read(service: String, account: String) -> String {
+//        let query: [String: Any] = [
+//            kSecClass as String       : kSecClassGenericPassword,
+//            kSecAttrService as String : service,
+//            kSecAttrAccount as String : account,
+//            kSecReturnData as String  : true,
+//            kSecMatchLimit as String  : kSecMatchLimitOne
+//        ]
+//        
+//        var result: String?
+//        SecItemCopyMatching(query as CFDictionary, &result)
+//        return result
+//    }
+//    
+//    func delete(service: String, account: String) {
+//        let query: [String: Any] = [
+//            kSecClass as String       : kSecClassGenericPassword,
+//            kSecAttrService as String : service,
+//            kSecAttrAccount as String : account
+//        ]
+//        SecItemDelete(query as CFDictionary)
+//    }
+//}
+
+
 
 import Foundation
 import Security
 
-class KeychainHelper {
+final class KeychainHelper {
     static let shared = KeychainHelper()
-    
     private init() {}
     
-    func save(_ data: Data, service: String, account: String) {
+    // MARK: - Save
+    func save(_ value: String, service: String, account: String) {
+        guard let data = value.data(using: .utf8) else { return }
+        
         let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-            kSecValueData as String: data
+            kSecClass as String       : kSecClassGenericPassword,
+            kSecAttrService as String : service,
+            kSecAttrAccount as String : account
         ]
         
+        // Delete old item if exists
         SecItemDelete(query as CFDictionary)
-        SecItemAdd(query as CFDictionary, nil) 
-    }
-    
-    func read(service: String, account: String) -> Data? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-            kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne
+        
+        // Add new item
+        let attributes: [String: Any] = [
+            kSecClass as String       : kSecClassGenericPassword,
+            kSecAttrService as String : service,
+            kSecAttrAccount as String : account,
+            kSecValueData as String   : data
         ]
         
-        var dataTypeRef: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
-        
-        if status == errSecSuccess {
-            return dataTypeRef as? Data
-        }
-        return nil
+        SecItemAdd(attributes as CFDictionary, nil)
     }
     
+    // MARK: - Read
+    func read(service: String, account: String) -> String? {
+        let query: [String: Any] = [
+            kSecClass as String       : kSecClassGenericPassword,
+            kSecAttrService as String : service,
+            kSecAttrAccount as String : account,
+            kSecReturnData as String  : true,
+            kSecMatchLimit as String  : kSecMatchLimitOne
+        ]
+        
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        
+        guard status == errSecSuccess,
+              let data = item as? Data,
+              let string = String(data: data, encoding: .utf8) else {
+            return nil
+        }
+        
+        return string
+    }
+    
+    // MARK: - Delete
     func delete(service: String, account: String) {
         let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account
+            kSecClass as String       : kSecClassGenericPassword,
+            kSecAttrService as String : service,
+            kSecAttrAccount as String : account
         ]
+        
         SecItemDelete(query as CFDictionary)
     }
 }
 
-extension KeychainHelper {
-    func saveString(_ value: String, service: String, account: String) {
-        guard let data = value.data(using: .utf8) else { return }
-        save(data, service: service, account: account)
-    }
-
-    func readString(service: String, account: String) -> String? {
-        guard let data = read(service: service, account: account) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
-}

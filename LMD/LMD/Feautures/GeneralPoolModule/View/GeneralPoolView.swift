@@ -25,27 +25,27 @@ struct GeneralPoolView: View {
                 Group {
                     if #available(iOS 17, *) {
                         Map(position: $viewModel.cameraPosition) {
-                            ForEach(viewModel.orders, id: \.orderID) { location in
-                                Annotation("", coordinate: location.coordinate2D) {
+                            ForEach(viewModel.locations) { location in
+                                Annotation("", coordinate: location.coordinates) {
                                     LocationMapAnnotationView(
                                         location: location,
-                                        isSelected: viewModel.mapOrder?.orderID == location.orderID
+                                        isSelected: viewModel.mapLocation == location
                                     ) {
-                                        viewModel.showNextLocation(order: location)
+                                        viewModel.showNextLocation(location: location)
                                     }
                                 }
                             }
                         }
                     } else {
                         Map(coordinateRegion: $viewModel.region,
-                            annotationItems: viewModel.orders
+                            annotationItems: viewModel.locations
                         ) { location in
-                            MapAnnotation(coordinate: location.coordinate2D) {
+                            MapAnnotation(coordinate: location.coordinates) {
                                 LocationMapAnnotationView(
                                     location: location,
-                                    isSelected: viewModel.mapOrder?.orderID == location.orderID
+                                    isSelected: viewModel.mapLocation == location
                                 ) {
-                                    viewModel.showNextLocation(order: location)
+                                    viewModel.showNextLocation(location: location)
                                 }
                             }
                         }
@@ -66,34 +66,32 @@ struct GeneralPoolView: View {
                 .padding(.top)
             }
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(viewModel.filteredLocations()) { location in
-                        Button {
-                            viewModel.showNextLocation(order: location)
-                        } label: {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(location.customerName)
-                                    .font(.headline)
-                                Text("# \(location.orderNumber)")
-                                    .font(.subheadline)
-                            }
-                            .foregroundColor(Color("PrimaryRed"))
-                            .padding()
-                            .frame(width: 260, alignment: .leading)
-                            .background(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 14)
-            }
+//            ScrollView(.horizontal, showsIndicators: false) {
+//                HStack(spacing: 12) {
+//                    ForEach(viewModel.filteredLocations()) { location in
+//                        Button {
+//                            viewModel.showNextLocation(location: location)
+//                        } label: {
+//                            VStack(alignment: .leading, spacing: 4) {
+//                                Text(location.customerName)
+//                                    .font(.headline)
+//                                Text("# \(location.orderNo)")
+//                                    .font(.subheadline)
+//                            }
+//                            .foregroundColor(Color("PrimaryRed"))
+//                            .padding()
+//                            .frame(width: 260, alignment: .leading)
+//                            .background(.white)
+//                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+//                        }
+//                    }
+//                }
+//                .padding(.horizontal)
+//                .padding(.vertical, 14)
+//            }
+            //testView()
         }
         .background(Color("PrimaryRed"))
-        .task {
-            await viewModel.fetchOrders()
-        }
     }
 }
 

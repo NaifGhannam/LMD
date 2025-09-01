@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct RefreshData: Decodable {
+struct RefreshData: Codable {
+    
     let user: RefreshUser
     let accessToken: String
     let refreshToken: String
-    let expiresAt: Date
+    let expiresAt: String
     
     enum CodingKeys: String, CodingKey {
         case user = "user"

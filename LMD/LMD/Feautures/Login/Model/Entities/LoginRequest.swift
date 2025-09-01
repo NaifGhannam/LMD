@@ -7,7 +7,7 @@
 
 import Foundation
 struct LoginRequest: Codable {
-    let p_username: String
-    let p_password: String
+    let email: String
+    let password: String
 }
 
