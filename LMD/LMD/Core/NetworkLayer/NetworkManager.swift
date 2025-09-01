@@ -44,12 +44,7 @@ final class NetworkManager {
             allHeaders["Authorization"] = "Bearer \(initialToken)"
         }
 
-        
-//        // Default headers
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        
-//        request.setValue("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMGRiNWI1NC04ODhkLTRhNzItYTkxYy04ZDA0YzRjNDgzYmEiLCJlbWFpbCI6InRheW1hbkBudGdjbGFyaXR5LmNvbSIsImV4cCI6MTc1NjY0MTU5MCwiaWF0IjoxNzU2NjM3OTkwLCJ0eXBlIjoiYWNjZXNzIn0.8cwsWqhBqQyz3LCK3bw7R3q3M34HNFy1Z1Dyt6ya1cc", forHTTPHeaderField: "Authorization")
-
+    
         
         // Merge custom headers
         if let headers = headers {

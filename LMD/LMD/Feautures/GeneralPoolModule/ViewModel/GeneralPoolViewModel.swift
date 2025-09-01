@@ -11,6 +11,9 @@ import MapKit
 class GeneralPoolViewModel: ObservableObject {
     
     @Published var searchText = ""
+    @Published var isLoading = false
+    @Published var orders: [Order] = []
+    @Published var errorMessage: String?
     @Published var locations: [Location]
     @Published var mapLocation: Location {
         didSet { updateCamera(to: mapLocation) }
@@ -21,7 +24,10 @@ class GeneralPoolViewModel: ObservableObject {
     
     private let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
     
-    init() {
+    
+    private let generalPoolService : GeneralPoolServiceProtocol
+    
+    init(generalPoolService: GeneralPoolServiceProtocol = GeneralPoolService()) {
         let locations = LocationsDataService.locations
         self.locations = locations
         let first = locations.first!
@@ -30,6 +36,7 @@ class GeneralPoolViewModel: ObservableObject {
         let initialRegion = MKCoordinateRegion(center: first.coordinates, span: span)
         self.region = initialRegion
         self.cameraPosition = .region(initialRegion)
+        self.generalPoolService = generalPoolService
     }
     
     private func updateCamera(to location: Location) {
@@ -58,6 +65,25 @@ class GeneralPoolViewModel: ObservableObject {
             $0.customerName.localizedCaseInsensitiveContains(text)
             || $0.orderNo.localizedCaseInsensitiveContains(text)
         }
+    }
+    
+    func loadOrders() async {
+        
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        do {
+            
+            let result = try await generalPoolService.getGeneralPool()
+            self.orders = result.data.initialOrders
+            print("-----------------------------------------------")
+            
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+        
+        self.isLoading = false
+        
     }
 }
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Pagination: Codable {
+struct Paginations: Codable {
     
     let currentPage: Int
     let totalPages: Int

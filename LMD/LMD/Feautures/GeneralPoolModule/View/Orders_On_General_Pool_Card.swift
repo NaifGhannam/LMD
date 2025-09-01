@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct Orders_On_General_Pool_Card : View {
-    @State var name : String = "Hanan"
-    @State var orderID : String = "181818"
-    @State var CreatedAt : String = "25/02/1447 AH"
-    @State var  numberOfOrders : Int = 0
-    @State var RoadDistance : Double?
+    @State var name : String
+    @State var orderID : String
+    @State var CreatedAt : String
+    @State var  numberOfOrders  : Int?
+    @State var RoadDistance : Double? 
     
     var body: some View {
         VStack {
@@ -34,7 +34,7 @@ struct Orders_On_General_Pool_Card : View {
                                   .foregroundColor(.white)
                                    
                                     //ADD spacing from API
-                                Text("\(RoadDistance) km")
+                                Text("\(RoadDistance ?? 0, specifier: "%.2f") km")
                                     .scaledToFit()
                                     .foregroundColor(.white)
                                    
@@ -77,5 +77,12 @@ struct Orders_On_General_Pool_Card : View {
 }
 
 #Preview {
-    Orders_On_General_Pool_Card()
+    Orders_On_General_Pool_Card(
+        name: "Hanan",
+        orderID: "181818",
+        CreatedAt: "25/02/1447 AH",
+        numberOfOrders: 3,
+        RoadDistance: 12.5
+    )
+
 }

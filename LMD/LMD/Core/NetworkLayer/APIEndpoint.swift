@@ -13,6 +13,7 @@ enum APIEndpoint {
     case getUserOrders
     case updateOrderStatues
     case getAllUsers
+    case generalPool
     
     var authBaseURL: String {
         return "https://kgomwyksxjqtcjwlzbsp.supabase.co/"
@@ -31,6 +32,8 @@ enum APIEndpoint {
             
         case .getAllUsers:
             return "functions/v1/get-all-users"
+        case .generalPool:
+            return "functions/v1/live-orders?page=1&limit=25&search=john&latitude&longitude&radius_km"
         }
     }
     
@@ -46,6 +49,8 @@ enum APIEndpoint {
             return .post
             
         case .getAllUsers:
+            return .get
+        case .generalPool:
             return .get
         }
     }
@@ -64,6 +69,8 @@ enum APIEndpoint {
         case .getAllUsers:
             return true
             
+        case .generalPool:
+            return true
         }
     }
     

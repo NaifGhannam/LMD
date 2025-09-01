@@ -6,10 +6,13 @@
          contextName = "closure #2 in testView.body.getter:testView.swift">
          <PersistentStrings>
             <PersistentString
-               value = "viewModel.fetchMyOrders()">
+               value = " await viewModel.fetchMyOrders()">
             </PersistentString>
             <PersistentString
-               value = " await viewModel.fetchMyOrders()">
+               value = "await viewModel.loadOrders()">
+            </PersistentString>
+            <PersistentString
+               value = "viewModel.fetchMyOrders()">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -26,6 +29,17 @@
          <PersistentStrings>
             <PersistentString
                value = "data.accessToken">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GeneralPoolViewModel.loadOrders():GeneralPoolViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "result">
+            </PersistentString>
+            <PersistentString
+               value = "result.data.initialOrders">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
