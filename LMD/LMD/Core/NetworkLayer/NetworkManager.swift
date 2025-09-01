@@ -8,14 +8,19 @@
 import Foundation
 
 final class NetworkManager {
+    
     static let shared = NetworkManager()
+    
     private init() {}
 
+    //var authSession: AuthSession?
+    
     func request<T: Decodable>(
         endpoint: APIEndpoint,
         body: Encodable? = nil,
         headers: [String: String]? = nil
     ) async throws -> T {
+        
         guard let url = URL(string: endpoint.url) else {
             throw NetworkError.invalidURL
         }
@@ -25,15 +30,8 @@ final class NetworkManager {
 
         // Default headers
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        //if let token = TokenStore.shared.accessToken {
-            request.setValue("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMGRiNWI1NC04ODhkLTRhNzItYTkxYy04ZDA0YzRjNDgzYmEiLCJlbWFpbCI6InRheW1hbkBudGdjbGFyaXR5LmNvbSIsImV4cCI6MTc1NjY0MTU5MCwiaWF0IjoxNzU2NjM3OTkwLCJ0eXBlIjoiYWNjZXNzIn0.8cwsWqhBqQyz3LCK3bw7R3q3M34HNFy1Z1Dyt6ya1cc", forHTTPHeaderField: "Authorization")
-        //}
-        // Supabase API key
-//        request.setValue(
-//            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndieWV3b2RyaXp6ZWNtaGtjdWlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1MjI5NDksImV4cCI6MjA3MTA5ODk0OX0.mBq9iQRLKeEXg1qV1VGMahw3LmNiP30-rKfCqoDIDEU",
-//            forHTTPHeaderField: "apikey"
-//        )
-
+        
+        request.setValue("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMGRiNWI1NC04ODhkLTRhNzItYTkxYy04ZDA0YzRjNDgzYmEiLCJlbWFpbCI6InRheW1hbkBudGdjbGFyaXR5LmNvbSIsImV4cCI6MTc1NjcxMjY5NCwiaWF0IjoxNzU2NzA5MDk0LCJ0eXBlIjoiYWNjZXNzIn0.A-8jl2QoywBRGrbUy8LKkgFRahJ0oDLYxWOf2L4T67I", forHTTPHeaderField: "Authorization")
 
         // Custom headers
         headers?.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
@@ -44,13 +42,21 @@ final class NetworkManager {
         }
 
         let (data, response) = try await URLSession.shared.data(for: request)
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.unknown
         }
+        
         guard 200..<300 ~= httpResponse.statusCode else {
             throw NetworkError.requestFailed(httpResponse.statusCode)
         }
-
+        
+        if httpResponse.statusCode == 401 {
+           Task {
+               await RefreshViewModel().refresh(refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhMGRiNWI1NC04ODhkLTRhNzItYTkxYy04ZDA0YzRjNDgzYmEiLCJleHAiOjE3NTkzMDEwOTQsImlhdCI6MTc1NjcwOTA5NCwidHlwZSI6InJlZnJlc2gifQ._XHRF95MKTJNiJU3UVrTKOylubGrVxo68aez8v6896A")
+            }
+        }
+        
         do {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {

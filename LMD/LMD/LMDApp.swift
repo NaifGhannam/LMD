@@ -10,6 +10,10 @@ import SwiftUI
 @main
 struct LMDApp: App {
     
+    init() {
+        Task { await AuthSession.shared.bootstrapFromKeychain() }
+    }
+    
     @StateObject private var viewModel = GeneralPoolViewModel()
     
     var body: some Scene {

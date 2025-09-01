@@ -7,12 +7,15 @@
 import Foundation
 
 enum NetworkError: Error, LocalizedError {
+    
     case invalidURL
     case requestFailed(Int)
     case decodingFailed
     case unknown
     case custom(String)
-
+    case missingRefreshToken
+    case refreshFailed(Int)
+    
     var errorDescription: String? {
         switch self {
         case .invalidURL:
@@ -25,6 +28,10 @@ enum NetworkError: Error, LocalizedError {
             return "An unknown error occurred."
         case .custom(let message):
             return message
+        case .missingRefreshToken:
+            return "Missing refresh token."
+        case .refreshFailed(let code):
+            return "Token refresh failed with status \(code)."
         }
     }
 }

@@ -52,3 +52,15 @@ class KeychainHelper {
         SecItemDelete(query as CFDictionary)
     }
 }
+
+extension KeychainHelper {
+    func saveString(_ value: String, service: String, account: String) {
+        guard let data = value.data(using: .utf8) else { return }
+        save(data, service: service, account: account)
+    }
+
+    func readString(service: String, account: String) -> String? {
+        guard let data = read(service: service, account: account) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+}
