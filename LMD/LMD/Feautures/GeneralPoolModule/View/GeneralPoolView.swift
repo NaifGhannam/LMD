@@ -22,36 +22,43 @@ struct GeneralPoolView: View {
             
             ZStack(alignment: .top) {
                 
-//                Group {
-//                    if #available(iOS 17, *) {
-//                        Map(position: $viewModel.cameraPosition) {
-//                            ForEach(viewModel.locations) { location in
-//                                Annotation("", coordinate: location.coordinates) {
-//                                    LocationMapAnnotationView(
-//                                        location: location,
-//                                        isSelected: viewModel.mapLocation == location
-//                                    ) {
-//                                        viewModel.showNextLocation(location: location)
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    } else {
-//                        Map(coordinateRegion: $viewModel.region,
-//                            annotationItems: viewModel.locations
-//                        ) { location in
-//                            MapAnnotation(coordinate: location.coordinates) {
-//                                LocationMapAnnotationView(
-//                                    location: location,
-//                                    isSelected: viewModel.mapLocation == location
-//                                ) {
-//                                    viewModel.showNextLocation(location: location)
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-                
+                Group {
+                    if #available(iOS 17, *) {
+                        Map(position: $viewModel.cameraPosition) {
+                            ForEach(viewModel.orders, id: \.id) { order in
+                                
+                                Annotation("", coordinate: order.coordinate2D) {
+                                    AnyView(
+                                        LocationMapAnnotationView(
+                                            location: order,
+                                            isSelected: viewModel.mapOrder?.id == order.id
+                                        ) {
+                                            viewModel.showNextLocation(order: order)
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        Map(
+                            coordinateRegion: $viewModel.region,
+                            annotationItems: viewModel.orders
+                        ) { order in
+
+                            MapAnnotation(coordinate: order.coordinate2D) {
+                                AnyView(
+                                    LocationMapAnnotationView(
+                                        location: order,
+                                        isSelected: viewModel.mapOrder?.id == order.id
+                                    ) {
+                                        viewModel.showNextLocation(order: order)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            
                 VStack(spacing: 0) {
                     Text("\(value, specifier: "%.2f") Km")
                         .bold()
@@ -64,9 +71,16 @@ struct GeneralPoolView: View {
                 .frame(width: UIScreen.main.bounds.width * 0.7)
                 .background(.white)
                 .padding(.top)
+                
             }
+            
+            Spacer()
+            
+            testView(viewModel: viewModel)
         }
-        .background(Color("PrimaryRed"))
+        .task {
+            await viewModel.fetchOrders()
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 
+@MainActor
 class GeneralPoolViewModel: ObservableObject {
     
     @Published var searchText = ""
@@ -25,7 +26,7 @@ class GeneralPoolViewModel: ObservableObject {
     @Published var cameraPosition: MapCameraPosition
     @Published var region: MKCoordinateRegion = .init()
     
-    private let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+    private let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
     private let generalPoolService : GeneralPoolServiceProtocol
     
     init(generalPoolService: GeneralPoolServiceProtocol = GeneralPoolService()) {
@@ -42,10 +43,6 @@ class GeneralPoolViewModel: ObservableObject {
             
             let result = try await generalPoolService.getGeneralPool()
             self.orders = result.data.initialOrders
-            for item in result.data.initialOrders {
-                print(item.coordinate2D.latitude)
-                print(item.coordinate2D.longitude)
-            }
             
         } catch {
             self.errorMessage = error.localizedDescription
@@ -68,7 +65,7 @@ class GeneralPoolViewModel: ObservableObject {
         }
     }
     
-    func filteredLocations() -> [Order] {
+    func filteredOrders() -> [Order] {
         
         let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         
@@ -80,24 +77,5 @@ class GeneralPoolViewModel: ObservableObject {
             $0.customerName.localizedCaseInsensitiveContains(text)
             || $0.orderNumber.localizedCaseInsensitiveContains(text)
         }
-    }
-    
-    func loadOrders() async {
-        
-        self.isLoading = true
-        self.errorMessage = nil
-        
-        do {
-            
-            let result = try await generalPoolService.getGeneralPool()
-            self.orders = result.data.initialOrders
-            print("-----------------------------------------------")
-            
-        } catch {
-            self.errorMessage = error.localizedDescription
-        }
-        
-        self.isLoading = false
-        
     }
 }

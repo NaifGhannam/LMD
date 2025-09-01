@@ -10,13 +10,13 @@
 import SwiftUI
 
 struct testView: View {
-    @StateObject var viewModel = GeneralPoolViewModel()
+    @ObservedObject var viewModel = GeneralPoolViewModel()
     var body: some View {
         VStack{
     
             ScrollView (.horizontal){
                 HStack (spacing : 0){
-                    ForEach(viewModel.orders,id : \.orderID){order  in
+                    ForEach(viewModel.filteredOrders()){ order  in
                         Orders_On_General_Pool_Card(name: order.customerName ,
                             orderID: order.orderNumber ,
                             CreatedAt: order.orderDate ,
@@ -28,7 +28,7 @@ struct testView: View {
             }
         }
         .task {
-            await viewModel.loadOrders()
+            await viewModel.fetchOrders()
         }
     }
 }
