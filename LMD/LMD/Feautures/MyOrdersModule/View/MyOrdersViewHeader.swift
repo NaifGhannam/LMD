@@ -36,7 +36,7 @@ struct MyOrdersViewHeader: View {
                     .padding(10)
                 
                 TextField("Search By Order Number", text: $viewModel.searchText)
-                .frame(height: 50)
+                    .frame(height: 50)
             }
             .background(.white)
             .cornerRadius(6)

@@ -6,12 +6,13 @@
 //
 
 import Foundation
+
 final class NetworkManager {
+    
     static let shared = NetworkManager()
+    
     private init() {}
     
-   //private let serviceName = "com.lmd.app"
-   
     private let serviceName = Bundle.main.bundleIdentifier ?? "com.lmd.app"
     
     func request<T: Decodable>(
@@ -19,6 +20,7 @@ final class NetworkManager {
         body: Encodable? = nil,
         headers: [String: String]? = nil
     ) async throws -> T {
+        
         guard let url = URL(string: endpoint.url) else {
             throw NetworkError.invalidURL
         }
@@ -43,8 +45,6 @@ final class NetworkManager {
             let initialToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtnb213eWtzeGpxdGNqd2x6YnNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3ODQ0NTEsImV4cCI6MjA3MTM2MDQ1MX0.g0JTJ4fftJum44D3gDJHwnoXK0XBLmWnsRbQcSVO5zs"
             allHeaders["Authorization"] = "Bearer \(initialToken)"
         }
-
-    
         
         // Merge custom headers
         if let headers = headers {
@@ -68,6 +68,26 @@ final class NetworkManager {
             throw NetworkError.unknown
         }
         
+        // ---------- REFRESH-INTEGRATION START ----------
+        if httpResponse.statusCode == 401, endpoint.requiresAuth {
+            try await refreshAccessToken()
+            
+            if let newAccess = KeychainHelper.shared.read(service: serviceName, account: "accessToken") {
+                request.setValue("Bearer \(newAccess)", forHTTPHeaderField: "Authorization")
+            }
+            
+            let (data2, response2) = try await URLSession.shared.data(for: request)
+            
+            guard let http2 = response2 as? HTTPURLResponse, (200..<300).contains(http2.statusCode) else {
+                throw NetworkError.requestFailed((response2 as? HTTPURLResponse)?.statusCode ?? -1)
+            }
+            
+            do { return try JSONDecoder().decode(T.self, from: data2) }
+            
+            catch { throw NetworkError.decodingFailed }
+        }
+        // ---------- REFRESH-INTEGRATION END ----------
+        
         guard 200..<300 ~= httpResponse.statusCode else {
             throw NetworkError.requestFailed(httpResponse.statusCode)
         }
@@ -76,6 +96,32 @@ final class NetworkManager {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
             throw NetworkError.decodingFailed
+        }
+    }
+    
+    private func refreshAccessToken() async throws {
+        print("------------------------------------------------------")
+        print("🔄 [Auth] refreshAccessToken() called")
+        print("------------------------------------------------------")
+
+        guard let refreshToken = KeychainHelper.shared.read(service: serviceName, account: "refreshToken") else {
+            print("❌ [Auth] No refresh token in Keychain")
+            throw NetworkError.unauthorized
+        }
+
+        do {
+            let resp = try await RefreshService().refreshToken(refreshToken: refreshToken)
+            print("✅ [Auth] refresh succeeded; new token expires at: \(resp.data.expiresAt)")
+            
+            KeychainHelper.shared.save(resp.data.accessToken,  service: serviceName, account: "accessToken")
+            KeychainHelper.shared.save(resp.data.refreshToken, service: serviceName, account: "refreshToken")
+
+            if let preview = KeychainHelper.shared.read(service: serviceName, account: "accessToken")?.prefix(12) {
+                print("🔐 [Auth] saved access token prefix: \(preview)…")
+            }
+        } catch {
+            print("❌ [Auth] refresh failed with error: \(error)")
+            throw error
         }
     }
 }

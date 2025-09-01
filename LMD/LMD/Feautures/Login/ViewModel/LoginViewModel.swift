@@ -20,6 +20,7 @@ class LoginViewModel: ObservableObject {
         static let loggedInUser = "loggedInUser"
         static let accessToken = "accessToken"
         static let refreshToken = "refreshToken"
+        static let userId = "userId"
     }
 
     init(service: LoginServiceProtocol = LoginService()) {
@@ -56,6 +57,12 @@ class LoginViewModel: ObservableObject {
             KeychainHelper.shared.save(data.refreshToken,
                                        service: service,
                                        account: StorageKey.refreshToken)
+            
+            // Save userId to Keychain
+            KeychainHelper.shared.save(data.user.id,
+                                       service: service,
+                                       account: StorageKey.userId)
+
 
             // Clear password from memory
             password = ""

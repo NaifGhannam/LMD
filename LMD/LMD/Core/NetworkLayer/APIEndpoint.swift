@@ -14,6 +14,7 @@ enum APIEndpoint {
     case updateOrderStatues
     case getAllUsers
     case generalPool
+    case refreshToken
     
     var authBaseURL: String {
         return "https://kgomwyksxjqtcjwlzbsp.supabase.co/"
@@ -32,8 +33,12 @@ enum APIEndpoint {
             
         case .getAllUsers:
             return "functions/v1/get-all-users"
+
         case .generalPool:
             return "functions/v1/live-orders"
+            
+        case .refreshToken:
+            return "functions/v1/refresh-token"
         }
     }
     
@@ -50,8 +55,13 @@ enum APIEndpoint {
             
         case .getAllUsers:
             return .get
+            
         case .generalPool:
             return .get
+            
+        case .refreshToken:
+            return .post
+
         }
     }
     
@@ -71,6 +81,9 @@ enum APIEndpoint {
             
         case .generalPool:
             return true
+
+        case .refreshToken:
+            return false
         }
     }
     

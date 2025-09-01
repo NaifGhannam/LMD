@@ -39,27 +39,27 @@ struct OrderDetailsView: View {
            Group {
                if #available(iOS 17, *) {
                    Map(position: $viewModel.cameraPosition) {
-                       ForEach(viewModel.locations) { location in
-                           Annotation("", coordinate: location.coordinates) {
+                       ForEach(viewModel.orders, id: \.orderID) { location in
+                           Annotation("", coordinate: location.coordinate2D) {
                                LocationMapAnnotationView(
                                    location: location,
-                                   isSelected: viewModel.mapLocation == location
+                                   isSelected: viewModel.mapOrder?.orderID == location.orderID
                                ) {
-                                   viewModel.showNextLocation(location: location)
+                                   viewModel.showNextLocation(order: location)
                                }
                            }
                        }
                    }
                } else {
                    Map(coordinateRegion: $viewModel.region,
-                       annotationItems: viewModel.locations
+                       annotationItems: viewModel.orders
                    ) { location in
-                       MapAnnotation(coordinate: location.coordinates) {
+                       MapAnnotation(coordinate: location.coordinate2D) {
                            LocationMapAnnotationView(
                                location: location,
-                               isSelected: viewModel.mapLocation == location
+                               isSelected: viewModel.mapOrder?.orderID == location.orderID
                            ) {
-                               viewModel.showNextLocation(location: location)
+                               viewModel.showNextLocation(order: location)
                            }
                        }
                    }
@@ -74,5 +74,8 @@ struct OrderDetailsView: View {
        .ignoresSafeArea(edges: .bottom)
        .navigationBarHidden(true)
        .navigationBarBackButtonHidden(true)
+       .task {
+           await viewModel.fetchOrders()
+       }
     }
 }

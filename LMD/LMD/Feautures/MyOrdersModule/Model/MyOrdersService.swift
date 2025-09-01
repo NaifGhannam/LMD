@@ -14,9 +14,9 @@ struct MyOrdersService: MyOrdersServiceProtocol {
         return try await NetworkManager.shared.request(endpoint: .getUserOrders)
     }
     
-    func updateOrderStatues(orderId: String, statusId: Int) async throws -> OrderStatusUpdateResponse {
+    func updateOrderStatues(orderId: String, statusId: Int, assignedAgentId: String?) async throws -> OrderStatusUpdateResponse {
         
-        let request = OrderStatusUpdateRequest(orderID: orderId, statusID: statusId)
+        let request = OrderStatusUpdateRequest(orderID: orderId, statusID: statusId, assignedAgentId: assignedAgentId)
         
         return try await NetworkManager.shared.request(endpoint: .updateOrderStatues, body: request)
     }

@@ -32,8 +32,10 @@ class MyOrdersViewModel: ObservableObject {
         do {
             
             let result = try await orderService.getMyOrders()
+            
             self.orders = result.data.orders
             self.ordersData = result.data
+        
             
         } catch {
             self.errorMessage = error.localizedDescription
@@ -42,14 +44,14 @@ class MyOrdersViewModel: ObservableObject {
         self.isLoading = false
     }
     
-    func updateOrderStatues(orderId: String, statusId: Int) async {
+    func updateOrderStatues(orderId: String, statusId: Int, assignedAgentId: String? = nil) async {
         
         self.isLoading = true
         self.errorMessage = nil
         
         do {
             
-            let result = try await orderService.updateOrderStatues(orderId: orderId, statusId: statusId)
+            _ = try await orderService.updateOrderStatues(orderId: orderId, statusId: statusId, assignedAgentId: assignedAgentId)
             
         } catch {
             self.errorMessage = error.localizedDescription
@@ -65,10 +67,8 @@ class MyOrdersViewModel: ObservableObject {
         
         do {
             
-            print("-------------------------------------------------------")
             let result = try await orderService.getAllUsers()
             self.users = result.data
-            print(result.success)
         
         } catch {
             self.errorMessage = error.localizedDescription
