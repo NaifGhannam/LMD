@@ -99,5 +99,4 @@ struct Orders_On_General_Pool_Card : View {
         numberOfOrders: 3,
         RoadDistance: 12.5
     )
-
 }

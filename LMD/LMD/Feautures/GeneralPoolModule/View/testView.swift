@@ -13,18 +13,19 @@ struct testView: View {
     @ObservedObject var viewModel = GeneralPoolViewModel()
     var body: some View {
         VStack{
-    
             ScrollView (.horizontal){
                 HStack (spacing : 0){
                     ForEach(viewModel.filteredOrders()){ order  in
-                        Orders_On_General_Pool_Card(name: order.customerName ,
-                            orderID: order.orderNumber ,
-                            CreatedAt: order.orderDate ,
-                            RoadDistance: order.distanceKm )
+                        Button (action: {viewModel.showNextLocation(order: order)}) {
+                            Orders_On_General_Pool_Card(name: order.customerName ,
+                                orderID: order.orderNumber ,
+                                CreatedAt: order.orderDate ,
+                                RoadDistance: order.distanceKm )
+                            .foregroundColor(.black)
+                        }
                         
                     }
                 }
-                
             }
         }
         .task {
