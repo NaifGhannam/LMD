@@ -72,7 +72,7 @@ enum APIEndpoint {
             return true
             
         case .refreshToken:
-            return false 
+            return false
         }
     }
     

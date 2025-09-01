@@ -78,6 +78,3 @@ struct LoginView: View {
     LoginView()
 }
 
-#Preview {
-    LoginView()
-}

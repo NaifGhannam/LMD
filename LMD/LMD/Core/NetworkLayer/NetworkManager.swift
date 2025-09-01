@@ -100,15 +100,28 @@ final class NetworkManager {
     }
     
     private func refreshAccessToken() async throws {
-        
+        print("------------------------------------------------------")
+        print("🔄 [Auth] refreshAccessToken() called")
+        print("------------------------------------------------------")
+
         guard let refreshToken = KeychainHelper.shared.read(service: serviceName, account: "refreshToken") else {
+            print("❌ [Auth] No refresh token in Keychain")
             throw NetworkError.unauthorized
         }
-        
-        let service = RefreshService()
-        let resp = try await service.refreshToken(refreshToken: refreshToken)
-        
-        KeychainHelper.shared.save(resp.data.accessToken,  service: serviceName, account: "accessToken")
-        KeychainHelper.shared.save(resp.data.refreshToken, service: serviceName, account: "refreshToken")
+
+        do {
+            let resp = try await RefreshService().refreshToken(refreshToken: refreshToken)
+            print("✅ [Auth] refresh succeeded; new token expires at: \(resp.data.expiresAt)")
+            
+            KeychainHelper.shared.save(resp.data.accessToken,  service: serviceName, account: "accessToken")
+            KeychainHelper.shared.save(resp.data.refreshToken, service: serviceName, account: "refreshToken")
+
+            if let preview = KeychainHelper.shared.read(service: serviceName, account: "accessToken")?.prefix(12) {
+                print("🔐 [Auth] saved access token prefix: \(preview)…")
+            }
+        } catch {
+            print("❌ [Auth] refresh failed with error: \(error)")
+            throw error
+        }
     }
 }

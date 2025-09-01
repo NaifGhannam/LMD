@@ -14,7 +14,7 @@ struct LMDApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MyOrdersView()
+            LoginView()
                 .environmentObject(viewModel)
         }
     }

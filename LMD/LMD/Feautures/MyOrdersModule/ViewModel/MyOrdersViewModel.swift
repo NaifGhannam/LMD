@@ -32,11 +32,10 @@ class MyOrdersViewModel: ObservableObject {
         do {
             
             let result = try await orderService.getMyOrders()
+            
             self.orders = result.data.orders
             self.ordersData = result.data
-            for item in result.data.orders {
-                print(item.orderID)
-            }
+        
             
         } catch {
             self.errorMessage = error.localizedDescription
@@ -68,10 +67,8 @@ class MyOrdersViewModel: ObservableObject {
         
         do {
             
-            print("-------------------------------------------------------")
             let result = try await orderService.getAllUsers()
             self.users = result.data
-            print(result.success)
         
         } catch {
             self.errorMessage = error.localizedDescription
