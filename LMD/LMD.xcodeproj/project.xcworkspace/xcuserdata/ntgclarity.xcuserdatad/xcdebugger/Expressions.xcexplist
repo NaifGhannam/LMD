@@ -3,6 +3,17 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "closure #2 in testView.body.getter:testView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "viewModel.fetchMyOrders()">
+            </PersistentString>
+            <PersistentString
+               value = " await viewModel.fetchMyOrders()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "NetworkManager.request&lt;LMD.OrdersResponse&gt;(endpoint:body:headers:):NetworkManager.swift">
          <PersistentStrings>
             <PersistentString
@@ -15,6 +26,14 @@
          <PersistentStrings>
             <PersistentString
                value = "data.accessToken">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "NetworkManager.request&lt;LMD.LoginResponse&gt;(endpoint:body:headers:):NetworkManager.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "KeychainHelper.shared.read(service: serviceName, account: &quot;accessToken&quot;)">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

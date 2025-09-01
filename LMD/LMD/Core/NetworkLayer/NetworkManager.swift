@@ -10,7 +10,9 @@ final class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
     
-    private let serviceName = "com.lmd.app"
+   //private let serviceName = "com.lmd.app"
+   
+    private let serviceName = Bundle.main.bundleIdentifier ?? "com.lmd.app"
     
     func request<T: Decodable>(
         endpoint: APIEndpoint,
