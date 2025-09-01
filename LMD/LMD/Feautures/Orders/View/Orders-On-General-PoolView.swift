@@ -10,9 +10,9 @@ import SwiftUI
 struct Orders_On_General_Pool_Card : View {
     @State var name : String = "Hanan"
     @State var orderID : String = "181818"
-    @State var CreatedAt : Date  = Date()
+    @State var CreatedAt : String = "25/02/1447 AH"
     @State var  numberOfOrders : Int = 0
-    @State var RoadDistance : Int = 18
+    @State var RoadDistance : Double?
     
     var body: some View {
         VStack {

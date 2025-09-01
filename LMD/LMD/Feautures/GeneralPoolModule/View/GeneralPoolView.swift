@@ -66,29 +66,30 @@ struct GeneralPoolView: View {
                 .padding(.top)
             }
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(viewModel.filteredLocations()) { location in
-                        Button {
-                            viewModel.showNextLocation(location: location)
-                        } label: {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(location.customerName)
-                                    .font(.headline)
-                                Text("# \(location.orderNo)")
-                                    .font(.subheadline)
-                            }
-                            .foregroundColor(Color("PrimaryRed"))
-                            .padding()
-                            .frame(width: 260, alignment: .leading)
-                            .background(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 14)
-            }
+//            ScrollView(.horizontal, showsIndicators: false) {
+//                HStack(spacing: 12) {
+//                    ForEach(viewModel.filteredLocations()) { location in
+//                        Button {
+//                            viewModel.showNextLocation(location: location)
+//                        } label: {
+//                            VStack(alignment: .leading, spacing: 4) {
+//                                Text(location.customerName)
+//                                    .font(.headline)
+//                                Text("# \(location.orderNo)")
+//                                    .font(.subheadline)
+//                            }
+//                            .foregroundColor(Color("PrimaryRed"))
+//                            .padding()
+//                            .frame(width: 260, alignment: .leading)
+//                            .background(.white)
+//                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+//                        }
+//                    }
+//                }
+//                .padding(.horizontal)
+//                .padding(.vertical, 14)
+//            }
+            testView()
         }
         .background(Color("PrimaryRed"))
     }

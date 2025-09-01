@@ -8,32 +8,25 @@
 import SwiftUI
 
 struct testView: View {
+    @StateObject var viewModel = MyOrdersViewModel()
     var body: some View {
         VStack{
-           Text("Hello, World!")
-                .font(.largeTitle)
-                .foregroundColor(.blue)
-                .padding()
-                .background(Color.yellow)
-                .cornerRadius(20)
-                .shadow(radius: 10)
-                .padding()
-            
-            Text("Hello, World!")
-                .frame(width: 300, height: 200, alignment: .center)
-
+    
             ScrollView (.horizontal){
                 HStack (spacing : 0){
-                    ForEach(1...10 ,id : \.self){_ in
-                        Orders_On_General_Pool_Card(name: "ahmad", orderID: "20000", CreatedAt: Date() , numberOfOrders: 1, RoadDistance: 19)
+                    ForEach(viewModel.orders,id : \.orderID){order  in
+                        Orders_On_General_Pool_Card(name: order.customerName , orderID: order.orderID , CreatedAt: order.orderDate , numberOfOrders: 22 , RoadDistance: order.distanceKm )
                         
                     }
                 }
             }
         }
+        .task {
+            await viewModel.fetchMyOrders()
+        }
     }
 }
 
-#Preview {
-    testView()
-}
+//#Preview {
+//    testView()
+//}

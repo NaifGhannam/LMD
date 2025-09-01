@@ -49,11 +49,11 @@ class LoginViewModel: ObservableObject {
 
             // Save tokens to Keychain (use bundle id as service)
             let service = Bundle.main.bundleIdentifier ?? "com.lmd.app"
-            KeychainHelper.shared.save(Data(data.accessToken.utf8),
+            KeychainHelper.shared.save(data.accessToken,
                                        service: service,
                                        account: StorageKey.accessToken)
 
-            KeychainHelper.shared.save(Data(data.refreshToken.utf8),
+            KeychainHelper.shared.save(data.refreshToken,
                                        service: service,
                                        account: StorageKey.refreshToken)
 
@@ -84,12 +84,12 @@ class LoginViewModel: ObservableObject {
     }
 
     /// Helper to read access token (useful for NetworkManager)
-    func getAccessToken() -> String? {
-        let service = Bundle.main.bundleIdentifier ?? "com.lmd.app"
-        guard let data = KeychainHelper.shared.read(service: service, account: StorageKey.accessToken),
-              let token = String(data: data, encoding: .utf8) else {
-            return nil
-        }
-        return token
-    }
+//    func getAccessToken() -> String? {
+//        let service = Bundle.main.bundleIdentifier ?? "com.lmd.app"
+//        guard let data = KeychainHelper.shared.read(service: service, account: StorageKey.accessToken),
+//              let token = String(data: data, encoding: .utf8) else {
+//            return nil
+//        }
+//        return token
+//    }
 }
