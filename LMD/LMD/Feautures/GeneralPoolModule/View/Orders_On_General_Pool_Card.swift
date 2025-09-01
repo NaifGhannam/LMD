@@ -12,7 +12,7 @@ struct Orders_On_General_Pool_Card : View {
     @State var orderID : String
     @State var CreatedAt : String
     @State var  numberOfOrders  : Int?
-    @State var RoadDistance : Double? 
+    @State var RoadDistance : Double?
     
     var body: some View {
         VStack {
@@ -20,57 +20,59 @@ struct Orders_On_General_Pool_Card : View {
                 Color.red
                 
              VStack {
-                 HStack{
-                     Rectangle()
-                           .fill(Color.red)
-                           .frame(width: 100, height: 100)
-                           .cornerRadius(50)
-                           .overlay(
-                            VStack (spacing : 20){
-                                
-                                Image(systemName: "location.circle.fill")
-                                    .resizable()
-                                    .frame(width: 30, height: 30)
-                                  .foregroundColor(.white)
-                                   
-                                    //ADD spacing from API
-                                Text("\(RoadDistance ?? 0, specifier: "%.2f") km")
-                                    .scaledToFit()
-                                    .foregroundColor(.white)
-                                   
-                                    
-                            }
-                            )
-                           .padding(.leading)
-                           
+                 HStack {
+                     VStack (spacing : 10){
+                         
+                         Image(systemName: "location.circle.fill")
+                             .resizable()
+                             .frame(width: 20, height: 20)
+                           .foregroundColor(.white)
+                            
+                             //ADD spacing from API
+                         Text("\(RoadDistance ?? 0, specifier: "%.2f") km")
+                             .fontWidth(.condensed)
+                             .foregroundColor(.white)
+                             
+                     }
+                     .padding()
+                     .background(.red)
+                     .clipShape(Circle())
+                     .padding(.leading , 6)
                        
-                     VStack(alignment : .leading){
+                     VStack(alignment : .leading, spacing: 3){
                            Text("\(name)")
-                               .font(.title2)
+                             .font(.headline)
                                .fontWeight(.bold)
                                .foregroundStyle(.red)
                            
-                         Text("#\(orderID) orderd at \(CreatedAt.description.split(separator: " ")[0]) \(CreatedAt.description.split(separator: " ")[1])")
-                               .font(.title2)
+                         Text("#\(orderID)")
+                             .font(.callout)
                                .fontWeight(.regular)
                                .foregroundStyle(.secondary)
+                         Text("orderd at \(CreatedAt)")
+                             .font(.callout)
+                               .fontWeight(.regular)
+                               .foregroundStyle(.secondary)
+
                            Text("items in order (\(numberOfOrders))")
-                               .font(.title2)
+                             .font(.caption)
                                .fontWeight(.regular)
                                .foregroundStyle(.secondary)
                            
-                       }.padding(.leading , 30)
+                       }.padding(.leading , 5)
                      Spacer()
                        
                  }
-                   .frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height * 0.2)
+                 .padding(1)
+                   .frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height * 0.11)
+                   
                    .background(Color.white)
-                 
-             }.padding(.horizontal , 10)
+                   .padding()
+             }//.padding(.horizontal , 10)
                     
             }
-            .frame(maxWidth: .infinity , maxHeight: 250)
-            Spacer()
+            .frame(maxWidth: .infinity , maxHeight: UIScreen.main.bounds.height * 0.12)
+            
         }
         
     }

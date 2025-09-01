@@ -33,7 +33,7 @@ enum APIEndpoint {
         case .getAllUsers:
             return "functions/v1/get-all-users"
         case .generalPool:
-            return "functions/v1/live-orders?page=1&limit=25&search=john&latitude&longitude&radius_km"
+            return "functions/v1/live-orders"
         }
     }
     
