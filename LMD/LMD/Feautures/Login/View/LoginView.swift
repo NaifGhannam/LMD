@@ -12,7 +12,9 @@ struct LoginView: View {
     var body: some View {
         Group {
             if viewModel.loggedInUser != nil {
-                ContentView()
+                
+                MainTabView()
+                
             } else {
                 VStack(spacing: 20) {
                     

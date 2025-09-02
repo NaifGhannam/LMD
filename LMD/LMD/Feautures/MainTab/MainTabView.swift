@@ -8,27 +8,36 @@
 import SwiftUI
 
 struct MainTabView: View {
-    
-    @Binding var selectedTab: String
-    
     var body: some View {
-        HStack {
+        
+        TabView {
             
-            CustomTabView(image: "box", text: "Home", selectedTab: $selectedTab)
+            GeneralPoolView()
+                .environmentObject(GeneralPoolViewModel())
+                .tabItem {
+                    Label("Home", systemImage: "shippingbox.fill")
+                }
             
-            CustomTabView(image: "delivery-box", text: "Orders", selectedTab: $selectedTab)
+            MyOrdersView()
+                .tabItem {
+                    Label("Orders", systemImage: "text.page.badge.magnifyingglass")
+                }
             
-            CustomTabView(image: "report", text: "History", selectedTab: $selectedTab)
+            Text("History")
+                .tabItem {
+                    Label("History", systemImage: "shippingbox.fill")
+                }
             
-            CustomTabView(image: "box", text: "Logs", selectedTab: $selectedTab)
+            DeliveryLogView()
+                .tabItem {
+                    Label("Logs", systemImage: "car.fill")
+                }
             
-            CustomTabView(image: "user", text: "Profile", selectedTab: $selectedTab)
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.crop.circle")
+                }
         }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(25)
-        .padding(.horizontal)
-        .shadow(radius: 5)
+        .accentColor(Color("PrimaryRed"))
     }
 }
-
