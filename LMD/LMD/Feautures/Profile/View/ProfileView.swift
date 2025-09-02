@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @State var name : String = "naif almutairi"
-    @State var email : String = "naif@gmail.com"
+    @StateObject private var viewModel = LoginViewModel()
+//    @State var name : String = "naif almutairi"
+//    @State var email : String = "naif@gmail.com"
     var body: some View {
         VStack (spacing:10){
             Text("Profile")
@@ -28,10 +29,18 @@ struct ProfileView: View {
                 
                 
                 VStack(alignment: .leading , spacing: 10 ){
-                    Text("\(name)")
-                        .font(.system(size: 20, weight: .bold ))
-                    Text("\(email)")
-                        .font(.callout)
+                    if let user = viewModel.loggedInUser {
+                        Text("\(user.fullName)")
+                            .font(.system(size: 20, weight: .bold ))
+                        Text("\(user.email)")
+                            .font(.callout)
+                    }else {
+                        Text("Guest")
+                            .font(.system(size: 20, weight: .bold ))
+                        Text("Not logged in")
+                            .font(.callout)
+                    }
+                 
                     
                 }.padding(.horizontal , 20)
             }
