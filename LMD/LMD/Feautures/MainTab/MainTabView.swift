@@ -23,7 +23,7 @@ struct MainTabView: View {
                     Label("Orders", systemImage: "text.page.badge.magnifyingglass")
                 }
             
-            Text("History")
+            OrderHistoryView()
                 .tabItem {
                     Label("History", systemImage: "shippingbox.fill")
                 }

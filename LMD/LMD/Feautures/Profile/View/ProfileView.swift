@@ -13,6 +13,7 @@ struct ProfileView: View {
 //    @State var email : String = "naif@gmail.com"
     var body: some View {
         VStack (spacing:10){
+            
             Text("Profile")
                 .font(.largeTitle)
                 .foregroundStyle(.white)
