@@ -35,43 +35,57 @@ struct OrderDetailsView: View {
            .foregroundColor(Color.white)
            .padding([.horizontal, .bottom], 20)
            .frame(maxWidth: .infinity)
+           .background(Color("PrimaryRed"))
            
            Group {
                if #available(iOS 17, *) {
-                   Map(position: $viewModel.cameraPosition) {
-                       ForEach(viewModel.orders, id: \.orderID) { location in
-                           Annotation("", coordinate: location.coordinate2D) {
-                               LocationMapAnnotationView(
-                                   location: location,
-                                   isSelected: viewModel.mapOrder?.orderID == location.orderID
-                               ) {
-                                   viewModel.showNextLocation(order: location)
-                               }
-                           }
+                   Map(
+                       position: .constant(
+                           .region(
+                               MKCoordinateRegion(
+                                   center: order.coordinate2D,
+                                   span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                               )
+                           )
+                       )
+                   ) {
+                       Annotation("", coordinate: order.coordinate2D) {
+                           Image("MapMarker")
+                               .resizable()
+                               .scaledToFit()
+                               .frame(width: 35, height: 35)
+                               .shadow(radius: 10)
                        }
                    }
                } else {
-                   Map(coordinateRegion: $viewModel.region,
-                       annotationItems: viewModel.orders
+                   Map(
+                       coordinateRegion: .constant(
+                           MKCoordinateRegion(
+                               center: order.coordinate2D,
+                               span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+                           )
+                       ),
+                       annotationItems: [order]
                    ) { location in
                        MapAnnotation(coordinate: location.coordinate2D) {
-                           LocationMapAnnotationView(
-                               location: location,
-                               isSelected: viewModel.mapOrder?.orderID == location.orderID
-                           ) {
-                               viewModel.showNextLocation(order: location)
-                           }
+                           Image("MapMarker")
+                               .resizable()
+                               .scaledToFit()
+                               .frame(width: 35, height: 35)
+                               .shadow(radius: 10)
                        }
                    }
                }
            }
            
-           DetailsCard(order: order, viewModel: MyOrdersViewModel())
-               .padding(12)
-               .padding(.bottom, 20)
+           VStack {
+               DetailsCard(order: order, viewModel: MyOrdersViewModel(), isShowDetailsBtn: false)
+                   .padding(12)
+           }
+           .background(Color("PrimaryRed"))
+           
+           Spacer()
         }
-       .background(Color("PrimaryRed"))
-       .ignoresSafeArea(edges: .bottom)
        .navigationBarHidden(true)
        .navigationBarBackButtonHidden(true)
        .task {

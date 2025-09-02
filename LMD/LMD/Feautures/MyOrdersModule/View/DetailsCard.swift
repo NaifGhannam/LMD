@@ -14,6 +14,7 @@ struct DetailsCard: View {
     @State private var pendingAction: OrderAction?
     @State private var isUpdating = false
     @State private var isShowingSheet = false
+    @State var isShowDetailsBtn = true
     @Environment(\.dismiss) var dismiss
     @Environment(\.openURL) private var openURL
     
@@ -92,14 +93,17 @@ struct DetailsCard: View {
             
             HStack {
                 
-                NavigationLink(destination: OrderDetailsView(order: order).environmentObject(GeneralPoolViewModel())) {
+                if isShowDetailsBtn {
                     
-                    Text("Order Details")
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(8)
-                        .background(Color("PrimaryRed"))
-                        .cornerRadius(10)
+                    NavigationLink(destination: OrderDetailsView(order: order).environmentObject(GeneralPoolViewModel())) {
+                        
+                        Text("Order Details")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(8)
+                            .background(Color("PrimaryRed"))
+                            .cornerRadius(10)
+                    }
                 }
                 
                 if order.statusID != OrderStatusEnum.canceled.rawValue,
