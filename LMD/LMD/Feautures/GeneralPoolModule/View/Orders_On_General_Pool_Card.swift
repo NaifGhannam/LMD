@@ -67,7 +67,7 @@ struct Orders_On_General_Pool_Card : View {
                                                        .fontWeight(.regular)
                                                        .foregroundStyle(.secondary)
 
-                           Text("items in order (\(numberOfOrders))")
+                         Text("items in order (\(numberOfOrders ?? 0))")
                              .font(.caption)
                                .fontWeight(.regular)
                                .foregroundStyle(.secondary)

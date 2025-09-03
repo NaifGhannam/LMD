@@ -26,7 +26,7 @@ class GeneralPoolViewModel: ObservableObject {
     @Published var cameraPosition: MapCameraPosition
     @Published var region: MKCoordinateRegion = .init()
     
-    private let span = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
+    private let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
     private let generalPoolService : GeneralPoolServiceProtocol
     
     init(generalPoolService: GeneralPoolServiceProtocol = GeneralPoolService()) {
