@@ -74,8 +74,6 @@ struct GeneralPoolView: View {
                 
             }
             
-            Spacer()
-            
             testView(viewModel: viewModel)
         }
         .task {

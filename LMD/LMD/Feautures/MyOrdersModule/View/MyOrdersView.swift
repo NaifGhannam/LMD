@@ -29,6 +29,9 @@ struct MyOrdersView: View {
                         }
                     }
                     .padding(.top, 15)
+                    
+                    Spacer()
+                        .frame(height: UIScreen.main.bounds.height * 0.12)
                 }
             }
             .task {
