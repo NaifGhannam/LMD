@@ -13,78 +13,93 @@ struct Orders_On_General_Pool_Card : View {
     @State var CreatedAt : String
     @State var  numberOfOrders  : Int?
     @State var RoadDistance : Double?
+    var action: (() -> ())?
     
     private var createdDate: Date? {
-           let formatter = ISO8601DateFormatter()
-           formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-           return formatter.date(from: CreatedAt)
-       }
-       
-       private var timeAgo: String {
-           guard let date = createdDate else { return "unknown time" }
-           let formatter = RelativeDateTimeFormatter()
-           formatter.unitsStyle = .full
-           return formatter.localizedString(for: date, relativeTo: Date())
-       }
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter.date(from: CreatedAt)
+    }
+    
+    private var timeAgo: String {
+        guard let date = createdDate else { return "unknown time" }
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        return formatter.localizedString(for: date, relativeTo: Date())
+    }
     
     var body: some View {
         VStack {
             ZStack {
                 Color.red
                 
-             VStack {
-                 HStack {
-                     VStack (spacing : 10){
-                         
-                         Image(systemName: "location.circle.fill")
-                             .resizable()
-                             .frame(width: 20, height: 20)
-                           .foregroundColor(.white)
+                VStack {
+                    HStack {
+                        VStack (spacing : 10){
                             
-                             //ADD spacing from API
-                         Text("\(RoadDistance ?? 0, specifier: "%.2f") km")
-                             .fontWidth(.condensed)
-                             .foregroundColor(.white)
-                             
-                     }
-                     .padding()
-                     .background(.red)
-                     .clipShape(Circle())
-                     .padding(.leading , 6)
-                       
-                     VStack(alignment : .leading, spacing: 3){
-                           Text("\(name)")
-                             .font(.headline)
-                               .fontWeight(.bold)
-                               .foregroundStyle(.red)
-                           
-                         Text("#\(orderID)")
-                             .font(.callout)
-                               .fontWeight(.regular)
-                               .foregroundStyle(.secondary)
-                         Text("ordered \(timeAgo)")
-                                                       .font(.callout)
-                                                       .fontWeight(.regular)
-                                                       .foregroundStyle(.secondary)
-
-                         Text("items in order (\(numberOfOrders ?? 0))")
-                             .font(.caption)
-                               .fontWeight(.regular)
-                               .foregroundStyle(.secondary)
-                           
-                       }.padding(.leading , 5)
-                     Spacer()
-                       
-                 }
-                 .padding(1)
-                   .frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height * 0.11)
-                   
-                   .background(Color.white)
-                   .padding()
-             }//.padding(.horizontal , 10)
+                            Image(systemName: "location.circle.fill")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.white)
+                            
+                            //ADD spacing from API
+                            Text("\(RoadDistance ?? 0, specifier: "%.2f") km")
+                                .fontWidth(.condensed)
+                                .foregroundColor(.white)
+                            
+                        }
+                        .padding()
+                        .background(.red)
+                        .clipShape(Circle())
+                        .padding(.leading , 6)
+                        
+                        VStack(alignment : .leading, spacing: 3){
+                            Text("\(name)")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.red)
+                            
+                            Text("#\(orderID)")
+                                .font(.callout)
+                                .fontWeight(.regular)
+                                .foregroundStyle(.secondary)
+                            
+                            Text("ordered \(timeAgo)")
+                                .font(.callout)
+                                .fontWeight(.regular)
+                                .foregroundStyle(.secondary)
+                            
+                            Text("items in order (\(numberOfOrders ?? 0))")
+                                .font(.caption)
+                                .fontWeight(.regular)
+                                .foregroundStyle(.secondary)
+                            
+                            Button(action: { action?() } ) {
+                                HStack {
+                                    Image(systemName: "plus")
+                                    Text("Add to your orders")
+                                }
+                                .foregroundColor(.white)
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 8)
+                            .background(Color("PrimaryRed"))
+                            .cornerRadius(10)
+                            .padding(.bottom, 10)
+                            
+                        }.padding(.leading , 5)
+                        Spacer()
+                        
+                    }
+                    //.padding(1)
+                    //.frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height * 0.11)
                     
+                    .background(Color.white)
+                    .padding()
+                }//.padding(.horizontal , 10)
+                
             }
-            .frame(maxWidth: .infinity , maxHeight: UIScreen.main.bounds.height * 0.12)
+            .frame(maxWidth: .infinity , maxHeight: UIScreen.main.bounds.height * 0.2)
             
         }
         

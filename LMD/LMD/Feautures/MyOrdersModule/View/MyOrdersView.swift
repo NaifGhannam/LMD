@@ -14,18 +14,31 @@ struct MyOrdersView: View {
     var body: some View {
         
         NavigationStack {
-          
+            
             VStack(spacing: 0) {
                 
                 MyOrdersViewHeader(viewModel: viewModel)
-                    
+                
                 ScrollView {
                     VStack(spacing: 20) {
                         
-                        ForEach(viewModel.filterData(), id: \.orderID) { order in
-                           
+                        ForEach(viewModel.filterData(), id: \.id) { order in
+                            
                             DetailsCard(order: order, viewModel: viewModel)
                                 .padding(.horizontal, 25)
+                            
+                            if order.id == viewModel.filterData().last?.id,
+                               viewModel.hasMore
+                            {
+                                HStack {
+                                    Spacer()
+                                    if viewModel.isLoading { ProgressView() }
+                                    Spacer()
+                                }
+                                .onAppear {
+                                    Task { await viewModel.fetchMyOrders() }
+                                }
+                            }
                         }
                     }
                     .padding(.top, 15)

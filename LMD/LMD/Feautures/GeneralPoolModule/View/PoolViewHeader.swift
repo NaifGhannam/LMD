@@ -19,30 +19,23 @@ struct PoolViewHeader: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
             
-            HStack {
+            HStack(spacing: 8) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
                 
-                HStack(spacing: 8) {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    
-                    TextField("Search by order NO or customer name", text: $viewModel.searchText)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .foregroundColor(Color.black)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 10)
-                .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(.white.opacity(0.25), lineWidth: 1)
-                )
-                
-                Image(systemName: "chevron.down")
-                    .bold()
-                    .foregroundColor(.white)
+                TextField("Search by order NO or customer name", text: $viewModel.searchText)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .foregroundColor(Color.black)
             }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .background(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(.white.opacity(0.25), lineWidth: 1)
+            )
             
         }
         .padding(.horizontal)

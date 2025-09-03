@@ -15,7 +15,7 @@ struct DetailsCard: View {
     @State private var isUpdating = false
     @State private var isShowingSheet = false
     @State var isShowDetailsBtn = true
-    @Environment(\.dismiss) var dismiss
+    @State private var selectedUser: UUID? = nil
     @Environment(\.openURL) private var openURL
     
     var body: some View {
@@ -145,17 +145,26 @@ struct DetailsCard: View {
         .cornerRadius(5)
         .shadow(radius: 3)
         .sheet(isPresented: $isShowingSheet) {
+            
             VStack {
-                ForEach(viewModel.users, id: \.id) { user in
-                    
-                    Button(action: {
-                        Task {
-                            await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.reassigned.rawValue, assignedAgentId: user.id)
+                List {
+                    Picker("Users", selection: $selectedUser) {
+                        
+                        ForEach(viewModel.users, id: \.id) { user in
+                            Button(action: {
+                                
+                                Task {
+                                    await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.added.rawValue, assignedAgentId: user.id)
+                                }
+                                
+                                isShowingSheet = false
+                            }) {
+                                Text(user.name)
+                                    .foregroundColor(.black)
+                            }
                         }
-                        dismiss()
-                    }) {
-                        Text(user.name)
                     }
+                    .pickerStyle(.inline)
                 }
             }
             .presentationDetents([.height(UIScreen.main.bounds.height * 0.5)])
@@ -178,10 +187,10 @@ struct DetailsCard: View {
     }
     
     private func call(_ raw: String) {
-            let digits = raw.filter { "+0123456789".contains($0) } // sanitize
-            guard let url = URL(string: "tel://\(digits)"),
-                  UIApplication.shared.canOpenURL(url)     // real device only
-            else { return }
-            openURL(url)
-        }
+        let digits = raw.filter { "+0123456789".contains($0) } // sanitize
+        guard let url = URL(string: "tel://\(digits)"),
+              UIApplication.shared.canOpenURL(url)     // real device only
+        else { return }
+        openURL(url)
+    }
 }
