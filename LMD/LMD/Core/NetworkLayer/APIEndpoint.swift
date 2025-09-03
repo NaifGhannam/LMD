@@ -10,7 +10,7 @@ import Foundation
 enum APIEndpoint {
     
     case login
-    case getUserOrders
+    case getUserOrders(page: Int, limit: Int)
     case updateOrderStatues
     case getAllUsers
     case generalPool
@@ -25,8 +25,8 @@ enum APIEndpoint {
         case .login:
             return "functions/v1/login"
             
-        case .getUserOrders:
-            return "functions/v1/orders-list?page=6&limit=5"
+        case .getUserOrders(let page, let limit):
+            return "functions/v1/orders-list?page=\(page)&limit=\(limit)"
             
         case .updateOrderStatues:
             return "functions/v1/update-order-status"

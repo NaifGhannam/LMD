@@ -10,7 +10,7 @@ import Foundation
 struct OrdersData: Codable {
     
     let orders: [Order]
-    let pagination: Paginations
+    let pagination: Paginations?
     let filters: Filters
     let location: Locations
     let sorting: Sorting
