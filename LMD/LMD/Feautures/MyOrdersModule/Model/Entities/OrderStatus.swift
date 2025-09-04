@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum OrderStatusEnum: Int {
     case added = 1
@@ -16,6 +17,15 @@ enum OrderStatusEnum: Int {
     case start = 6
     case failed = 7
     case done = 8
+    
+    var statusImage: Image {
+            switch self {
+            case .done:
+                return Image(systemName: "checkmark.circle") // ✅ Done
+            default:
+                return Image(systemName: "xmark.circle")    // ❌ Not Done
+            }
+        }
 }
 
 struct OrderAction: Identifiable, Equatable {

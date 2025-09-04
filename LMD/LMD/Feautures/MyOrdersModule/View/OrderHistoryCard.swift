@@ -85,6 +85,6 @@ struct TimeAgoFormatter {
         guard let date = isoFormatter.date(from: isoDate) else { return "" }
         let interval = Date().timeIntervalSince(date)
         guard let formatted = componentsFormatter.string(from: interval) else { return "" }
-        return "Since \(formatted)"
+        return "\(formatted)"
     }
 }
