@@ -147,10 +147,16 @@ class MyOrdersViewModel: ObservableObject {
             }
         }()
         
+        let filtered = base.filter { order in
+            order.statusID != OrderStatusEnum.canceled.rawValue &&
+            order.statusID != OrderStatusEnum.failed.rawValue &&
+            order.statusID != OrderStatusEnum.done.rawValue
+        }
+        
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !query.isEmpty else { return base }
-
-        return base.filter { order in
+        
+        guard !query.isEmpty else { return filtered }
+        return filtered.filter { order in
             String(describing: order.orderNumber)
                 .localizedCaseInsensitiveContains(query)
         }
