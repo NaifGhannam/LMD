@@ -4,7 +4,6 @@
 //
 //  Created by Naif on 24/02/1447 AH.
 //
-
 import Foundation
 
 enum APIEndpoint {
@@ -15,6 +14,7 @@ enum APIEndpoint {
     case getAllUsers
     case generalPool
     case refreshToken
+    case Logout
     
     var authBaseURL: String {
         return "https://kgomwyksxjqtcjwlzbsp.supabase.co/"
@@ -39,6 +39,8 @@ enum APIEndpoint {
             
         case .refreshToken:
             return "functions/v1/refresh-token"
+        case .Logout:
+            return "functions/v1/logout"
         }
     }
     
@@ -62,6 +64,8 @@ enum APIEndpoint {
         case .refreshToken:
             return .post
 
+        case .Logout:
+            return .post
         }
     }
     
@@ -84,6 +88,8 @@ enum APIEndpoint {
 
         case .refreshToken:
             return false
+        case .Logout:
+            return true
         }
     }
     

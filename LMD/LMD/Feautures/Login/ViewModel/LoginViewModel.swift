@@ -1,6 +1,7 @@
 //
 //  LoginViewModel.swift
 //  LMD
+//  Created by Naif on 24/02/1447 AH.
 //
 
 import SwiftUI
@@ -14,6 +15,8 @@ class LoginViewModel: ObservableObject {
     @Published var loggedInUser: User?
 
     private let loginService: LoginServiceProtocol
+    private let logoutService: LogoutServiceProtocol
+
 
     // Storage keys for UserDefaults and Keychain accounts
     private enum StorageKey {
@@ -23,8 +26,11 @@ class LoginViewModel: ObservableObject {
         static let userId = "userId"
     }
 
-    init(service: LoginServiceProtocol = LoginService()) {
+    init(service: LoginServiceProtocol = LoginService(),
+         logoutService: LogoutServiceProtocol = LogoutService()
+        ) {
         self.loginService = service
+        self.logoutService = logoutService
         loadUserFromDefaults()
     }
 
@@ -84,15 +90,32 @@ class LoginViewModel: ObservableObject {
         }
     }
 
-    /// Logout: clear local user & remove tokens from Keychain
     func logout() {
-        loggedInUser = nil
-        UserDefaults.standard.removeObject(forKey: StorageKey.loggedInUser)
+          Task {
+              do {
+                  let success = try await logoutService.logout()
+                  if success {
+                      clearLocalData() // clear tokens + user data
+                  } else {
+                      errorMessage = "Logout failed on server"
+                  }
+              } catch {
+                  errorMessage = "Logout failed: \(error.localizedDescription)"
+              }
+          }
+        print("successfully logged out")
+      }
 
-        let service = Bundle.main.bundleIdentifier ?? "com.lmd.app"
-        KeychainHelper.shared.delete(service: service, account: StorageKey.accessToken)
-        KeychainHelper.shared.delete(service: service, account: StorageKey.refreshToken)
-    }
+      // 🔹 Extracted local data cleanup into a private helper
+      private func clearLocalData() {
+          loggedInUser = nil
+          UserDefaults.standard.removeObject(forKey: StorageKey.loggedInUser)
+
+          let service = Bundle.main.bundleIdentifier ?? "com.lmd.app"
+          KeychainHelper.shared.delete(service: service, account: StorageKey.accessToken)
+          KeychainHelper.shared.delete(service: service, account: StorageKey.refreshToken)
+          KeychainHelper.shared.delete(service: service, account: StorageKey.userId)
+      }
 
     
     func validateInputs() -> Bool {
