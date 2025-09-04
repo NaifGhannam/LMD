@@ -20,6 +20,7 @@ class MyOrdersViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var message: String?
     
+    private let serviceName = Bundle.main.bundleIdentifier ?? "com.lmd.app"
     private let orderService: MyOrdersServiceProtocol
     private var currentPage = 1
     
@@ -67,10 +68,16 @@ class MyOrdersViewModel: ObservableObject {
     }
     
     func updateOrderStatues(orderId: String, statusId: Int, assignedAgentId: String? = nil) async {
+        
         self.isLoading = true
         self.errorMessage = nil
+        
         do {
-            _ = try await orderService.updateOrderStatues(orderId: orderId, statusId: statusId, assignedAgentId: assignedAgentId)
+            
+            let result = try await orderService.updateOrderStatues(orderId: orderId, statusId: statusId, assignedAgentId: assignedAgentId)
+            
+            print(result.success)
+            
         } catch {
             self.errorMessage = error.localizedDescription
         }
@@ -78,23 +85,37 @@ class MyOrdersViewModel: ObservableObject {
     }
     
     func getAllUsers() async {
+        
         self.isLoading = true
         self.errorMessage = nil
+        
         do {
+            
             let result = try await orderService.getAllUsers()
             self.users = result.data
+            
         } catch {
             self.errorMessage = error.localizedDescription
         }
+        
         isLoading = false
     }
     
     func filterData() -> [Order] {
-        if searchText.isEmpty {
-            return orders
-        } else {
-            return orders.filter { $0.orderNumber.contains(searchText) }
+        let base: [Order] = {
+            if let userId = KeychainHelper.shared.read(service: serviceName, account: "userId") {
+                return orders.filter { $0.assignedAgentID == userId }
+            } else {
+                return orders
+            }
+        }()
+        
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else { return base }
+
+        return base.filter { order in
+            String(describing: order.orderNumber)
+                .localizedCaseInsensitiveContains(query)
         }
     }
-    
 }

@@ -20,35 +20,32 @@ struct MyOrdersView: View {
                 MyOrdersViewHeader(viewModel: viewModel)
                 
                 ScrollView {
-                    VStack(spacing: 20) {
-                        
-                        ForEach(viewModel.filterData(), id: \.id) { order in
-                            
+                    LazyVStack(spacing: 20) {
+                        ForEach(viewModel.filterData(), id: \.orderID) { order in
                             DetailsCard(order: order, viewModel: viewModel)
                                 .padding(.horizontal, 25)
-                            
-                            if order.id == viewModel.filterData().last?.id,
-                               viewModel.hasMore
-                            {
-                                HStack {
-                                    Spacer()
-                                    if viewModel.isLoading { ProgressView() }
-                                    Spacer()
-                                }
                                 .onAppear {
-                                    Task { await viewModel.fetchMyOrders() }
+                                    Task { await viewModel.loadMoreOrdersIfNeeded(currentOrder: order) }
                                 }
-                            }
+                        }
+                        if viewModel.isLoading {
+                            ProgressView("Loading more...").padding()
                         }
                     }
                     .padding(.top, 15)
-                    
-                    Spacer()
-                        .frame(height: UIScreen.main.bounds.height * 0.12)
+
+                    Spacer().frame(height: UIScreen.main.bounds.height * 0.12)
                 }
             }
             .task {
                 await viewModel.fetchMyOrders()
+                
+                for item in viewModel.filterData()
+                {
+                    print("\(item.customerName) - \(item.assignedAgentID)")
+                }
+                print("----------------------------")
+                print(viewModel.filterData().count)
             }
             .ignoresSafeArea(edges: .bottom)
         }

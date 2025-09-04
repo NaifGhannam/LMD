@@ -146,26 +146,20 @@ struct DetailsCard: View {
         .shadow(radius: 3)
         .sheet(isPresented: $isShowingSheet) {
             
-            VStack {
-                List {
-                    Picker("Users", selection: $selectedUser) {
-                        
-                        ForEach(viewModel.users, id: \.id) { user in
-                            Button(action: {
-                                
-                                Task {
-                                    await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.added.rawValue, assignedAgentId: user.id)
-                                }
-                                
-                                isShowingSheet = false
-                            }) {
-                                Text(user.name)
-                                    .foregroundColor(.black)
-                            }
-                        }
+            List(viewModel.users, id: \.id) { user in
+                Button(user.name) {
+                    
+                    isShowingSheet = false
+                    
+                    Task {
+                        await viewModel.updateOrderStatues(
+                            orderId: order.orderID,
+                            statusId: OrderStatusEnum.added.rawValue,
+                            assignedAgentId: user.id
+                        )
                     }
-                    .pickerStyle(.inline)
                 }
+                .foregroundColor(.black)
             }
             .presentationDetents([.height(UIScreen.main.bounds.height * 0.5)])
         }
