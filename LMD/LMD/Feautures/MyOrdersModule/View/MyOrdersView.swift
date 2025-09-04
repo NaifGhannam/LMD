@@ -36,6 +36,7 @@ struct MyOrdersView: View {
 
                     Spacer().frame(height: UIScreen.main.bounds.height * 0.12)
                 }
+
             }
             .task {
                 await viewModel.fetchMyOrders()
