@@ -95,11 +95,8 @@ struct DetailsCard: View {
                 
                 if isShowDetailsBtn {
                     
-                    
-                    NavigationLink(
-                        destination: OrderDetailsView(order: order)
-                            .environmentObject(viewModel) 
-                    ) {
+                    NavigationLink(destination: OrderDetailsView(order: order).environmentObject(GeneralPoolViewModel())) {
+                        
                         Text("Order Details")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -107,16 +104,6 @@ struct DetailsCard: View {
                             .background(Color("PrimaryRed"))
                             .cornerRadius(10)
                     }
-                    
-//                    NavigationLink(destination: OrderDetailsView(order: order).environmentObject(GeneralPoolViewModel())) {
-//                        
-//                        Text("Order Details")
-//                            .foregroundColor(.white)
-//                            .frame(maxWidth: .infinity)
-//                            .padding(8)
-//                            .background(Color("PrimaryRed"))
-//                            .cornerRadius(10)
-//                    }
                 }
                 
                 if order.statusID != OrderStatusEnum.canceled.rawValue,

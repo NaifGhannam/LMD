@@ -81,14 +81,10 @@ struct OrderDetailsView: View {
                }
            }
            
-//           VStack {
-//               DetailsCard(order: order, viewModel: MyOrdersViewModel(), isShowDetailsBtn: false)
-//                   .padding(12)
-//           }
            VStack {
-                       DetailsCard(order: order, viewModel: ordersVM, isShowDetailsBtn: false) 
-                           .padding(12)
-                   }
+               DetailsCard(order: order, viewModel: MyOrdersViewModel(), isShowDetailsBtn: false)
+                   .padding(12)
+           }
            .background(Color("PrimaryRed"))
            
            Spacer()

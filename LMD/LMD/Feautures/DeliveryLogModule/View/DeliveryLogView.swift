@@ -15,9 +15,7 @@ struct DeliveryLogView: View {
                Text("Delivery Log")
                     .font(.system(size: 20, weight: .bold))
                 Spacer()
-                Button(action: {}) {
-                    Image(systemName: "magnifyingglass")
-                }
+                
             }
             .foregroundColor(.white)
             .padding()
