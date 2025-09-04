@@ -67,22 +67,59 @@ class MyOrdersViewModel: ObservableObject {
         }
     }
     
+//    func updateOrderStatues(orderId: String, statusId: Int, assignedAgentId: String? = nil) async {
+//        
+//        self.isLoading = true
+//        self.errorMessage = nil
+//        
+//        do {
+//            
+//            let result = try await orderService.updateOrderStatues(orderId: orderId, statusId: statusId, assignedAgentId: assignedAgentId)
+//            
+//            print(result.success)
+//            
+//        } catch {
+//            self.errorMessage = error.localizedDescription
+//        }
+//        self.isLoading = false
+//    }
+    
     func updateOrderStatues(orderId: String, statusId: Int, assignedAgentId: String? = nil) async {
-        
-        self.isLoading = true
-        self.errorMessage = nil
-        
+        isLoading = true
+        errorMessage = nil
+        defer { isLoading = false }
+
         do {
-            
-            let result = try await orderService.updateOrderStatues(orderId: orderId, statusId: statusId, assignedAgentId: assignedAgentId)
-            
-            print(result.success)
-            
+            let result = try await orderService.updateOrderStatues(
+                orderId: orderId,
+                statusId: statusId,
+                assignedAgentId: assignedAgentId
+            )
+
+            // If your API returns the updated order, prefer using that.
+            // Otherwise, do an optimistic local update like below.
+            if result.success {
+                if let idx = orders.firstIndex(where: { $0.orderID == orderId }) {
+                    var updated = orders[idx]
+                    updated.statusID = statusId
+                    if let assignedAgentId { updated.assignedAgentID = assignedAgentId }
+                    // If you also need to update status name, do it here:
+                    // updated.orderStatuses.statusName = ...
+                    
+                    orders[idx] = updated  // <-- replace to trigger UI update
+                } else {
+                    // Fallback: if not found, refresh page 1 (optional)
+                    await fetchMyOrders()
+                }
+                message = "Order updated."
+            } else {
+                errorMessage = "Failed to update order."
+            }
         } catch {
-            self.errorMessage = error.localizedDescription
+            errorMessage = error.localizedDescription
         }
-        self.isLoading = false
     }
+
     
     func getAllUsers() async {
         

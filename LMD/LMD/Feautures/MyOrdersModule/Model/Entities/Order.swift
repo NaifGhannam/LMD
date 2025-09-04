@@ -14,8 +14,8 @@ struct Order: Codable {
     let customerID: String
     let customerName: String
     let address: String
-    let statusID: Int
-    let assignedAgentID: String
+    var statusID: Int
+    var assignedAgentID: String
     let partnerID: String?
     let dcID: String?
     let orderDate: String
