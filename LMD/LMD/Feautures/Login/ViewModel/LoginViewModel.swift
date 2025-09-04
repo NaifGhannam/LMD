@@ -90,13 +90,5 @@ class LoginViewModel: ObservableObject {
         KeychainHelper.shared.delete(service: service, account: StorageKey.refreshToken)
     }
 
-    /// Helper to read access token (useful for NetworkManager)
-//    func getAccessToken() -> String? {
-//        let service = Bundle.main.bundleIdentifier ?? "com.lmd.app"
-//        guard let data = KeychainHelper.shared.read(service: service, account: StorageKey.accessToken),
-//              let token = String(data: data, encoding: .utf8) else {
-//            return nil
-//        }
-//        return token
-//    }
+
 }
