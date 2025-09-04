@@ -33,6 +33,10 @@ class LoginViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false } // ensure loading flag is cleared
         errorMessage = nil
+        guard validateInputs() else {
+            isLoading = false
+            return
+        }
 
         do {
             let request = LoginRequest(email: email, password: password)
@@ -90,5 +94,29 @@ class LoginViewModel: ObservableObject {
         KeychainHelper.shared.delete(service: service, account: StorageKey.refreshToken)
     }
 
+    
+    func validateInputs() -> Bool {
+        if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            errorMessage = "Email is required."
+            return false
+        }
+        
+        if !isValidEmail(email) {
+            errorMessage = "Invalid email format."
+            return false
+        }
+
+        if password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            errorMessage = "Password is required."
+            return false
+        }
+
+        return true
+    }
+
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = #"^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
+        return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: email)
+    }
 
 }
