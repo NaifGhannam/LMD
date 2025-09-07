@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import PDFKit
+
 
 @MainActor
 class MyOrdersViewModel: ObservableObject {
@@ -20,13 +22,112 @@ class MyOrdersViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var message: String?
     
+    
+    @Published var sortAscending: Bool = true
+    @Published var selectedStatuses: Set<Int> = []
+
+    
     private let serviceName = Bundle.main.bundleIdentifier ?? "com.lmd.app"
     private let orderService: MyOrdersServiceProtocol
     private var currentPage = 1
     
+    
+    
     init(orderService: MyOrdersServiceProtocol = MyOrdersService()) {
         self.orderService = orderService
     }
+    
+    var displayedOrders: [Order] {
+           var filtered = orders
+           
+           // Filter by selected statuses
+           if !selectedStatuses.isEmpty {
+               filtered = filtered.filter { selectedStatuses.contains($0.statusID) }
+           }
+           
+           // Search by order number
+           let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+           if !query.isEmpty {
+               filtered = filtered.filter {
+                   $0.orderNumber.localizedCaseInsensitiveContains(query)
+               }
+           }
+           
+           // Sort by order date
+           filtered.sort {
+               if sortAscending {
+                   return $0.orderDate < $1.orderDate
+               } else {
+                   return $0.orderDate > $1.orderDate
+               }
+           }
+           
+           return filtered
+       }
+    //  Generate PDF from filtered orders
+      func exportFilteredOrdersAsPDF() -> URL? {
+          let pdfMetaData = [
+              kCGPDFContextCreator: "LMD App",
+              kCGPDFContextAuthor: "Your Company",
+              kCGPDFContextTitle: "Filtered Orders"
+          ]
+          
+          let format = UIGraphicsPDFRendererFormat()
+          format.documentInfo = pdfMetaData as [String: Any]
+          
+          // temporary file path
+          let fileName = "FilteredOrders.pdf"
+          let tempDir = FileManager.default.temporaryDirectory
+          let fileURL = tempDir.appendingPathComponent(fileName)
+          
+          let pageWidth: CGFloat = 595.2  // A4 width
+          let pageHeight: CGFloat = 841.8 // A4 height
+          let renderer = UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight), format: format)
+          
+          do {
+              try renderer.writePDF(to: fileURL, withActions: { context in
+                  context.beginPage()
+                  
+                  var yPosition: CGFloat = 20
+                  let leftMargin: CGFloat = 20
+                  
+                  // Title
+                  let title = "Filtered Orders (\(displayedOrders.count))"
+                  title.draw(at: CGPoint(x: leftMargin, y: yPosition), withAttributes: [
+                      .font: UIFont.boldSystemFont(ofSize: 20)
+                  ])
+                  yPosition += 40
+                  
+                  for order in displayedOrders {
+                      let text = """
+                      Order #: \(order.orderNumber)
+                      Customer: \(order.customerName)
+                      Date: \(order.orderDate)
+                      Status: \(order.statusID)
+                      ----------------------------
+                      """
+                      text.draw(at: CGPoint(x: leftMargin, y: yPosition), withAttributes: [
+                          .font: UIFont.systemFont(ofSize: 14)
+                      ])
+                      
+                      yPosition += 80
+                      
+                      //  Start a new page if we exceed the page height
+                      if yPosition > pageHeight - 100 {
+                          context.beginPage()
+                          yPosition = 20
+                      }
+                  }
+              })
+              
+              print("✅ PDF created at: \(fileURL)")
+              return fileURL
+          } catch {
+              print("❌ Could not create PDF file: \(error)")
+              return nil
+          }
+      }
+   
     
     func fetchMyOrders() async {
         currentPage = 1
@@ -67,23 +168,7 @@ class MyOrdersViewModel: ObservableObject {
         }
     }
     
-//    func updateOrderStatues(orderId: String, statusId: Int, assignedAgentId: String? = nil) async {
-//        
-//        self.isLoading = true
-//        self.errorMessage = nil
-//        
-//        do {
-//            
-//            let result = try await orderService.updateOrderStatues(orderId: orderId, statusId: statusId, assignedAgentId: assignedAgentId)
-//            
-//            print(result.success)
-//            
-//        } catch {
-//            self.errorMessage = error.localizedDescription
-//        }
-//        self.isLoading = false
-//    }
-    
+
     func updateOrderStatues(orderId: String, statusId: Int, assignedAgentId: String? = nil) async {
         isLoading = true
         errorMessage = nil

@@ -3,10 +3,11 @@
 //  LMD
 //
 //  Created by Naif on 11/03/1447 AH.
+
 import SwiftUI
 
 struct DeliveryLogCard: View {
-    let order: Order   // Pass the order
+    let order: Order
     
     var body: some View {
         HStack {
@@ -61,7 +62,7 @@ class TimeAgoFormatter2 {
         guard let date = date else { return "Unknown" }
         
         let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .full  // e.g., "30 minutes ago"
+        formatter.unitsStyle = .full
         
         return formatter.localizedString(for: date, relativeTo: Date())
     }
