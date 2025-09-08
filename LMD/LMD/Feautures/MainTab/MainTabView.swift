@@ -8,6 +8,7 @@
 import SwiftUI
 struct MainTabView: View {
     @EnvironmentObject var loginViewModel: LoginViewModel
+    @EnvironmentObject var languageManager: LanguageManager
     
     var body: some View {
         TabView {
@@ -38,5 +39,6 @@ struct MainTabView: View {
                 }
         }
         .accentColor(Color("PrimaryRed"))
+        .id(languageManager.currentLanguage)
     }
 }
