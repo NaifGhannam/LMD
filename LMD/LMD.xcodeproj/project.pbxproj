@@ -10,9 +10,22 @@
 		D275D0EC2E5335300094A6E4 /* LMD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LMD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CF2129222E6EC5F600398502 /* Exceptions for "LMD" folder in "LMD" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D275D0EB2E5335300094A6E4 /* LMD */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D275D0EE2E5335300094A6E4 /* LMD */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CF2129222E6EC5F600398502 /* Exceptions for "LMD" folder in "LMD" target */,
+			);
 			path = LMD;
 			sourceTree = "<group>";
 		};
@@ -259,6 +272,7 @@
 				DEVELOPMENT_TEAM = 9D5465BM2N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LMD/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need the location to show it on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -288,6 +302,7 @@
 				DEVELOPMENT_TEAM = 9D5465BM2N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LMD/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need the location to show it on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
