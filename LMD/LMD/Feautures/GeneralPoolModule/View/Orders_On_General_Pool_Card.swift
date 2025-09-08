@@ -4,6 +4,7 @@
 //
 //  Created by Naif on 25/02/1447 AH.
 //
+//
 
 import SwiftUI
 
@@ -11,7 +12,7 @@ struct Orders_On_General_Pool_Card : View {
     @State var name : String
     @State var orderID : String
     @State var CreatedAt : String
-    @State var  numberOfOrders  : Int?
+    @State var numberOfOrders : Int?
     @State var RoadDistance : Double?
     var action: (() -> ())?
     
@@ -22,7 +23,7 @@ struct Orders_On_General_Pool_Card : View {
     }
     
     private var timeAgo: String {
-        guard let date = createdDate else { return "unknown time" }
+        guard let date = createdDate else { return NSLocalizedString("unknown_time", comment: "") }
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .full
         return formatter.localizedString(for: date, relativeTo: Date())
@@ -35,26 +36,23 @@ struct Orders_On_General_Pool_Card : View {
                 
                 VStack {
                     HStack {
-                        VStack (spacing : 10){
-                            
+                        VStack(spacing: 10) {
                             Image(systemName: "location.circle.fill")
                                 .resizable()
                                 .frame(width: 20, height: 20)
                                 .foregroundColor(.white)
                             
-                            //ADD spacing from API
                             Text("\(RoadDistance ?? 0, specifier: "%.2f") km")
                                 .fontWidth(.condensed)
                                 .foregroundColor(.white)
-                            
                         }
                         .padding()
                         .background(.red)
                         .clipShape(Circle())
-                        .padding(.leading , 6)
+                        .padding(.leading, 6)
                         
-                        VStack(alignment : .leading, spacing: 3){
-                            Text("\(name)")
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(name)
                                 .font(.headline)
                                 .fontWeight(.bold)
                                 .foregroundStyle(.red)
@@ -64,20 +62,20 @@ struct Orders_On_General_Pool_Card : View {
                                 .fontWeight(.regular)
                                 .foregroundStyle(.secondary)
                             
-                            Text("ordered \(timeAgo)")
+                            Text(String(format: NSLocalizedString("ordered_time_ago", comment: ""), timeAgo))
                                 .font(.callout)
                                 .fontWeight(.regular)
                                 .foregroundStyle(.secondary)
                             
-                            Text("items in order (\(numberOfOrders ?? 0))")
+                            Text(String(format: NSLocalizedString("items_in_order", comment: ""), numberOfOrders ?? 0))
                                 .font(.caption)
                                 .fontWeight(.regular)
                                 .foregroundStyle(.secondary)
                             
-                            Button(action: { action?() } ) {
+                            Button(action: { action?() }) {
                                 HStack {
                                     Image(systemName: "plus")
-                                    Text("Add to your orders")
+                                    Text(NSLocalizedString("add_to_your_orders", comment: ""))
                                 }
                                 .foregroundColor(.white)
                             }
@@ -86,23 +84,16 @@ struct Orders_On_General_Pool_Card : View {
                             .background(Color("PrimaryRed"))
                             .cornerRadius(10)
                             .padding(.bottom, 10)
-                            
-                        }.padding(.leading , 5)
+                        }
+                        .padding(.leading, 5)
                         Spacer()
-                        
                     }
-                    //.padding(1)
-                    //.frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height * 0.11)
-                    
                     .background(Color.white)
                     .padding()
-                }//.padding(.horizontal , 10)
-                
+                }
             }
-            .frame(maxWidth: .infinity , maxHeight: UIScreen.main.bounds.height * 0.2)
-            
+            .frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height * 0.2)
         }
-        
     }
 }
 
@@ -110,7 +101,7 @@ struct Orders_On_General_Pool_Card : View {
     Orders_On_General_Pool_Card(
         name: "Hanan",
         orderID: "181818",
-        CreatedAt: "25/02/1447 AH",
+        CreatedAt: "2025-03-16T12:00:00Z",
         numberOfOrders: 3,
         RoadDistance: 12.5
     )

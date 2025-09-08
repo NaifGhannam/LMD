@@ -1,0 +1,69 @@
+/* 
+  Localizable.strings
+  LMD
+
+  Created by Naif on 24/02/1447 AH.
+  
+*/
+"welcome_message" = "Welcome to our app!";
+"change_language" = "Change Language";
+"language_en" = "English";
+"language_ar" = "Arabic";
+"login" = "Login";
+"email" = "Email";
+"password" = "Password";
+"logout" = "Logout" ;
+"changePassword" = "change Password";
+"language" = "language";
+"profile" = "Profile" ;
+"notifications"="Notifications";
+"chat"="Chat";
+
+
+"delivery_log_title" = "Delivery Log";
+"search_order_number" = "Search by order number";
+"sla" = "SLA";
+"order_details" = "Order details";
+"delivery_time" = "Delivery time";
+"time_relative" = "30 mins ago";
+
+
+"unknown_time" = "unknown time";
+"ordered_time_ago" = "ordered %@";
+"items_in_order" = "items in order (%d)";
+"add_to_your_orders" = "Add to your orders";
+
+
+"my_pool_title" = "My Pool";
+"search_order_or_customer" = "Search by order NO or customer name";
+//main tab view
+"tab_home" = "Home";
+"tab_orders" = "Orders";
+"tab_history" = "History";
+"tab_logs" = "Logs";
+"tab_profile" = "Profile";
+
+
+"new_order" = "new";
+"cancel_action" = "Cancel";
+"reassign_action" = "Reassign";
+"ok_button" = "OK";
+"order_details_button" = "Order Details";
+"delivery_failed_button" = "Delivery Failed";
+"call_button" = "Call";
+
+"my_orders_title" = "My Orders";
+"search_by_order_number" = "Search By Order Number";
+
+
+"order_history_title" = "Order History";
+"filter_by_status" = "Filter by Status";
+"sort_orders" = "Sort Orders";
+"oldest_to_newest" = "Oldest → Newest";
+"newest_to_oldest" = "Newest → Oldest";
+"export_as_pdf" = "Export as PDF";
+"loading_more" = "Loading more...";
+
+"status_delivered" = "Delivered";
+"status_canceled" = "Cancelled";
+"status_failed" = "Failed";

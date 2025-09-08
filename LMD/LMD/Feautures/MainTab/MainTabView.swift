@@ -13,21 +13,30 @@ struct MainTabView: View {
         TabView {
             GeneralPoolView()
                 .environmentObject(GeneralPoolViewModel())
-                .tabItem { Label("Home", systemImage: "shippingbox.fill") }
+                .tabItem {
+                    Label(NSLocalizedString("tab_home", comment: ""), systemImage: "shippingbox.fill")
+                }
             
             MyOrdersView()
-                .tabItem { Label("Orders", systemImage: "text.page.badge.magnifyingglass") }
+                .tabItem {
+                    Label(NSLocalizedString("tab_orders", comment: ""), systemImage: "text.page.badge.magnifyingglass")
+                }
             
             OrderHistoryView()
-                .tabItem { Label("History", systemImage: "shippingbox.fill") }
+                .tabItem {
+                    Label(NSLocalizedString("tab_history", comment: ""), systemImage: "shippingbox.fill")
+                }
             
             DeliveryLogView()
-                .tabItem { Label("Logs", systemImage: "car.fill") }
+                .tabItem {
+                    Label(NSLocalizedString("tab_logs", comment: ""), systemImage: "car.fill")
+                }
             
             ProfileView()
-                .tabItem { Label("Profile", systemImage: "person.crop.circle") }
+                .tabItem {
+                    Label(NSLocalizedString("tab_profile", comment: ""), systemImage: "person.crop.circle")
+                }
         }
         .accentColor(Color("PrimaryRed"))
-        
     }
 }

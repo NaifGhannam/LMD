@@ -1,0 +1,68 @@
+/* 
+  Localizable.strings
+  LMD
+
+  Created by Naif on 24/02/1447 AH.
+  
+*/
+"welcome_message" = "مرحبًا بك في تطبيقنا!";
+"change_language" = "تغيير اللغة";
+"language_en" = "الإنجليزية";
+"language_ar" = "العربية";
+"login" = "تسجيل الدخول";
+"email" = "البريد الإلكتروني";
+"password" = "كلمة المرور";
+"logout" = "تسجيل الخروج";
+"changePassword" = "تغيير الرمز";
+"language" = "اللغة ";
+"profile" = "الملف الشخصي" ;
+"notifications" = "الاشعارات";
+"chat" = "المحادثه";
+
+
+
+"delivery_log_title" = "سجل التوصيل";
+"search_order_number" = "البحث برقم الطلب";
+"sla" = "SAL" ;
+"order_details" = "تفاصيل الطلب";
+"delivery_time" = "وقت التوصيل";
+"time_relative" = "قبل 30 دقيقة";
+
+"unknown_time" = "وقت غير معروف";
+"ordered_time_ago" = "تم الطلب منذ %@";
+"items_in_order" = "عدد العناصر في الطلب (%d)";
+"add_to_your_orders" = "أضف إلى طلباتك";
+
+
+"my_pool_title" = "مخزني";
+"search_order_or_customer" = "البحث برقم الطلب أو اسم العميل";
+// main tab view
+"tab_home" = "الرئيسية";
+"tab_orders" = "الطلبات";
+"tab_history" = "السجل";
+"tab_logs" = "السجلات";
+"tab_profile" = "الملف الشخصي";
+
+"new_order" = "جديد";
+"cancel_action" = "إلغاء";
+"reassign_action" = "إعادة تعيين";
+"ok_button" = "موافق";
+"order_details_button" = "تفاصيل الطلب";
+"delivery_failed_button" = "فشل التوصيل";
+"call_button" = "اتصال";
+
+"my_orders_title" = "طلباتي";
+"search_by_order_number" = "البحث برقم الطلب";
+
+
+"order_history_title" = "سجل الطلبات";
+"filter_by_status" = "تصفية حسب الحالة";
+"sort_orders" = "ترتيب الطلبات";
+"oldest_to_newest" = "الأقدم → الأحدث";
+"newest_to_oldest" = "الأحدث → الأقدم";
+"export_as_pdf" = "تصدير كملف PDF";
+"loading_more" = "جاري تحميل المزيد...";
+
+"status_delivered" = "تم التسليم";
+"status_canceled" = "ملغي";
+"status_failed" = "فشل التسليم";

@@ -9,6 +9,7 @@ import SwiftUI
 struct LMDApp: App {
     
     @StateObject private var loginViewModel = LoginViewModel()
+    @StateObject private var languageManager = LanguageManager() 
     
     var body: some Scene {
         WindowGroup {
@@ -16,13 +17,17 @@ struct LMDApp: App {
                 if loginViewModel.loggedInUser != nil {
                     MainTabView()
                         .environmentObject(loginViewModel)
-                        .navigationBarHidden(true) 
+                        .environmentObject(languageManager)
+                        .navigationBarHidden(true)
                 } else {
                     LoginView()
                         .environmentObject(loginViewModel)
-                        .navigationBarHidden(true)
+                        .environmentObject(languageManager)
+                      //  .navigationBarHidden(true)
                 }
             }
+            .environment(\.layoutDirection, languageManager.currentLanguage == .arabic ? .rightToLeft : .leftToRight)
+
         }
     }
 }

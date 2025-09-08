@@ -4,7 +4,7 @@
 //
 //  Created by Tahani on 25/02/1447 AH.
 //
-
+//
 import SwiftUI
 
 struct DetailsCard: View {
@@ -41,7 +41,7 @@ struct DetailsCard: View {
                     
                     Text(order.customerName)
                     
-                    Text("new")
+                    Text(NSLocalizedString("new_order", comment: ""))
                         .foregroundColor(Color("PrimaryRed"))
                 }
                 
@@ -63,13 +63,13 @@ struct DetailsCard: View {
                                         await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.canceled.rawValue)
                                     }
                                 }) {
-                                    Text("Cancel")
+                                    Text(NSLocalizedString("cancel_action", comment: ""))
                                 }
                                 
                                 Button(action: {
                                     isShowingSheet.toggle()
                                 }) {
-                                    Text("Reassign")
+                                    Text(NSLocalizedString("reassign_action", comment: ""))
                                 }
                             } label: {
                                 Image("more")
@@ -97,7 +97,7 @@ struct DetailsCard: View {
                     
                     NavigationLink(destination: OrderDetailsView(order: order).environmentObject(GeneralPoolViewModel())) {
                         
-                        Text("Order Details")
+                        Text(NSLocalizedString("order_details_button", comment: ""))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding(8)
@@ -116,7 +116,7 @@ struct DetailsCard: View {
                         Alert(
                             title: Text(act.alertTitle),
                             message: Text(act.alertMessage),
-                            primaryButton: .default(Text("OK"), action: {
+                            primaryButton: .default(Text(NSLocalizedString("ok_button", comment: "")), action: {
                                 Task { await run(act) }
                             }),
                             secondaryButton: .cancel()
@@ -128,14 +128,14 @@ struct DetailsCard: View {
             
             if order.statusID == OrderStatusEnum.pickup.rawValue || order.statusID == OrderStatusEnum.start.rawValue {
                 
-                CustomButton(title: "Delivery Failed") {
+                CustomButton(title: NSLocalizedString("delivery_failed_button", comment: "")) {
                     Task {
                         await viewModel.updateOrderStatues(orderId: order.orderID, statusId: OrderStatusEnum.failed.rawValue)
                     }
                 }
             }
             
-            CustomButton(showIcon: true, title: "Call") {
+            CustomButton(showIcon: true, title: NSLocalizedString("call_button", comment: "")) {
                 call("+966 55 123 4567")
             }
         }
@@ -148,9 +148,7 @@ struct DetailsCard: View {
             
             List(viewModel.users, id: \.id) { user in
                 Button(user.name) {
-                    
                     isShowingSheet = false
-                    
                     Task {
                         await viewModel.updateOrderStatues(
                             orderId: order.orderID,

@@ -8,11 +8,12 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var loginViewModel: LoginViewModel
+    @EnvironmentObject var languageManager: LanguageManager
     
     var body: some View {
         VStack(spacing: 10) {
             
-            Text("Profile")
+        Text(NSLocalizedString("profile", comment: ""))
                 .font(.largeTitle)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
@@ -47,16 +48,23 @@ struct ProfileView: View {
                 .padding(.horizontal, 40)
             
             VStack(spacing: 15) {
-                settingsButton(image: "bell2", title: "notifications") { }
-                settingsButton(image: "Language", title: "language") { }
-                settingsButton(image: "password2", title: "changePassword") { }
-                settingsButton(image: "mdi_email", title: "chat") { }
+                settingsButton(image: "bell2", title:NSLocalizedString("notifications", comment: "") ) { }
+                
+                NavigationLink {
+                    LanguageSelectionView()
+                        .environmentObject(languageManager)
+                } label: {
+                    settingsButtonContent(image: "Language", title: NSLocalizedString("language", comment: ""))
+                }
+                
+                settingsButton(image: "password2", title: NSLocalizedString("changePassword", comment: "")) { }
+                settingsButton(image: "mdi_email", title: NSLocalizedString("chat", comment: "")) { }
             }
             
             Button {
                 loginViewModel.logout()
             } label: {
-                Text("Logout")
+                Text(NSLocalizedString("logout", comment: ""))
                     .frame(maxWidth: .infinity)
                     .frame(height: 53)
                     .font(.headline)
@@ -70,23 +78,26 @@ struct ProfileView: View {
         }
     }
     
-    @ViewBuilder
+    private func settingsButtonContent(image: String, title: String) -> some View {
+        HStack {
+            Image(image)
+                .foregroundColor(.black)
+                .font(.system(size: 20, weight: .regular))
+            Text(title)
+                .foregroundColor(.black)
+                .font(.system(size: 18, weight: .regular))
+            Spacer()
+            Image(systemName: "chevron.right")
+                .foregroundColor(.black)
+                .font(.system(size: 20, weight: .regular))
+        }
+        .frame(height: 50)
+        .padding(.horizontal)
+    }
+    
     private func settingsButton(image: String, title: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            HStack {
-                Image(image)
-                    .foregroundColor(.black)
-                    .font(.system(size: 20, weight: .regular))
-                Text(title)
-                    .foregroundColor(.black)
-                    .font(.system(size: 18, weight: .regular))
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.black)
-                    .font(.system(size: 20, weight: .regular))
-            }
-            .frame(height: 50)
-            .padding(.horizontal)
+            settingsButtonContent(image: image, title: title)
         }
     }
 }

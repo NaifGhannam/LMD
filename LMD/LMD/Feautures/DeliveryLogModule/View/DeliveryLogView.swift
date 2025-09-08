@@ -12,7 +12,7 @@ struct DeliveryLogView: View {
     var body: some View {
         VStack {
             HStack {
-               Text("Delivery Log")
+                Text(NSLocalizedString("delivery_log_title", comment: ""))
                     .font(.system(size: 20, weight: .bold))
                 Spacer()
             }
@@ -24,7 +24,7 @@ struct DeliveryLogView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray)
-                TextField("Search by order number", text: $vm.searchText)
+                TextField(NSLocalizedString("search_order_number", comment: ""), text: $vm.searchText)
                     .textFieldStyle(PlainTextFieldStyle())
                 if !vm.searchText.isEmpty {
                     Button(action: { vm.searchText = "" }) {
@@ -40,12 +40,12 @@ struct DeliveryLogView: View {
             
             VStack {
                 HStack {
-                    Text("SLA")
-                    Text("Order details")
+                    Text(NSLocalizedString("sla", comment: ""))
+                    Text(NSLocalizedString("order_details", comment: ""))
                         .font(.system(size: 18))
                         .padding(.horizontal, 14)
                     Spacer()
-                    Text("Delivery time")
+                    Text(NSLocalizedString("delivery_time", comment: ""))
                 }
                 .foregroundColor(.gray)
                 

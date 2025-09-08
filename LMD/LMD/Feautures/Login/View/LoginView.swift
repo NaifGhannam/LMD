@@ -8,6 +8,8 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var viewModel: LoginViewModel
+    @EnvironmentObject var languageManager: LanguageManager
+
     
     var body: some View {
         VStack(spacing: 20) {
@@ -15,12 +17,12 @@ struct LoginView: View {
             Image("NTG_logo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 200, height: 250)
+                .frame(width: 250, height: 300)
                 .padding(.bottom)
             
             // Email
             HStack {
-                TextField("Email", text: $viewModel.email)
+                TextField(NSLocalizedString("email", comment: ""), text: $viewModel.email)
                 Image(systemName: "person.fill")
                     .foregroundColor(.red)
             }
@@ -32,7 +34,7 @@ struct LoginView: View {
             
             // Password
             HStack {
-                SecureField("Password", text: $viewModel.password)
+                SecureField(NSLocalizedString("password", comment :""), text: $viewModel.password)
                 Image(systemName: "key.fill")
                     .foregroundColor(.red)
             }
@@ -49,7 +51,7 @@ struct LoginView: View {
             Button {
                 Task { await viewModel.login() }
             } label: {
-                Text("Login")
+                Text(NSLocalizedString("login", comment: ""))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .background(Color.red)
@@ -65,5 +67,37 @@ struct LoginView: View {
             Spacer()
         }
         .padding()
+        .navigationTitle("")
+        .toolbar {
+                   ToolbarItem(placement: .navigationBarTrailing) {
+                       Menu {
+                           ForEach(AppLanguage.allCases, id: \.self) { lang in
+                               Button {
+                                   languageManager.setLanguage(lang)
+                               } label: {
+                                   HStack {
+                                       Text(NSLocalizedString("language_\(lang.rawValue)", comment: ""))
+                                       Spacer()
+                                       if languageManager.currentLanguage == lang {
+                                           Image(systemName: "checkmark")
+                                               .foregroundColor(.red)
+                                       }
+                                   }
+                               }
+                           }
+                       } label: {
+                           Image(systemName: "globe")
+                               .foregroundColor(.red)
+                       }
+                   }
+               }
+           }
+       }
+
+#Preview {
+    NavigationStack {
+        LoginView()
+            .environmentObject(LoginViewModel())
+            .environmentObject(LanguageManager())
     }
 }

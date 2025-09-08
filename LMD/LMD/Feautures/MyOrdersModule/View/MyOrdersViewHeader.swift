@@ -16,7 +16,7 @@ struct MyOrdersViewHeader: View {
         VStack {
             HStack {
                 
-                Text("My Orders")
+                Text(NSLocalizedString("my_orders_title", comment: ""))
                     .font(.system(size: 25, weight: .semibold))
                     .foregroundColor(Color.white)
                 
@@ -35,7 +35,10 @@ struct MyOrdersViewHeader: View {
                     .foregroundColor(.gray)
                     .padding(10)
                 
-                TextField("Search By Order Number", text: $viewModel.searchText)
+                TextField(
+                    NSLocalizedString("search_by_order_number", comment: ""),
+                    text: $viewModel.searchText
+                )
                     .frame(height: 50)
             }
             .background(.white)

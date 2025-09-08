@@ -14,7 +14,7 @@ struct PoolViewHeader: View {
     var body: some View {
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("My Pool")
+            Text(NSLocalizedString("my_pool_title", comment: ""))
                 .font(.system(size: 25, weight: .semibold))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -23,8 +23,10 @@ struct PoolViewHeader: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray)
                 
-                TextField("Search by order NO or customer name", text: $viewModel.searchText)
-                    .textInputAutocapitalization(.never)
+                TextField(
+                    NSLocalizedString("search_order_or_customer", comment: ""),
+                    text: $viewModel.searchText
+                )                    .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .foregroundColor(Color.black)
             }
