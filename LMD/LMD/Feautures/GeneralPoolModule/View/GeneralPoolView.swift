@@ -12,7 +12,8 @@ import MapKit
 struct GeneralPoolView: View {
     @EnvironmentObject private var viewModel: GeneralPoolViewModel
     @State private var value: Double = 0
-
+    private let container = AppContainer()
+    
     var body: some View {
         VStack(spacing: 0) {
             PoolViewHeader()
@@ -60,7 +61,7 @@ struct GeneralPoolView: View {
                 .padding(.top)
             }
 
-            testView(viewModel: viewModel)
+            testView(viewModel: viewModel, orderViewModel: container.makeMyOrdersVM())
         }
         .task {
             await viewModel.fetchOrders()

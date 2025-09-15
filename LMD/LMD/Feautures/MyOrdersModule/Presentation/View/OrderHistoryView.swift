@@ -9,7 +9,7 @@ import SwiftUI
 import PDFKit
 
 struct OrderHistoryView: View {
-    @StateObject var vm = MyOrdersViewModel()
+    @StateObject var vm: MyOrdersViewModel
     
     var body: some View {
         VStack(spacing: 0) {

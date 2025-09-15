@@ -12,10 +12,8 @@ struct OrderDetailsView: View {
     
     @EnvironmentObject private var viewModel: GeneralPoolViewModel
     let order: Order
-    
-    @EnvironmentObject var ordersVM: MyOrdersViewModel
-    
     @Environment(\.dismiss) var dismiss
+    private let container = AppContainer()
     
     var body: some View {
         
@@ -82,7 +80,7 @@ struct OrderDetailsView: View {
            }
            
            VStack {
-               DetailsCard(order: order, viewModel: MyOrdersViewModel(), isShowDetailsBtn: false)
+               DetailsCard(order: order, viewModel: container.makeMyOrdersVM(), isShowDetailsBtn: false)
                    .padding(12)
            }
            .background(Color("PrimaryRed"))

@@ -11,7 +11,7 @@ import SwiftUI
 
 struct testView: View {
     @ObservedObject var viewModel = GeneralPoolViewModel()
-    @StateObject var orderViewModel = MyOrdersViewModel()
+    @StateObject var orderViewModel: MyOrdersViewModel
     private let serviceName = Bundle.main.bundleIdentifier ?? "com.lmd.app"
     
     var body: some View {

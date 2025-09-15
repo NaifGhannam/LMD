@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MyOrdersView: View {
     
-    @StateObject var viewModel = MyOrdersViewModel()
+    @StateObject var viewModel: MyOrdersViewModel
     
     var body: some View {
         
@@ -51,9 +51,4 @@ struct MyOrdersView: View {
             .ignoresSafeArea(edges: .bottom)
         }
     }
-}
-
-#Preview {
-    MyOrdersView()
-        .background(.gray.opacity(0.15))
 }

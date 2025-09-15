@@ -9,6 +9,7 @@ import SwiftUI
 struct MainTabView: View {
     @EnvironmentObject var loginViewModel: LoginViewModel
     @EnvironmentObject var languageManager: LanguageManager
+    private let container = AppContainer()
     
     var body: some View {
         TabView {
@@ -18,17 +19,17 @@ struct MainTabView: View {
                     Label(NSLocalizedString("tab_home", comment: ""), systemImage: "shippingbox.fill")
                 }
             
-            MyOrdersView()
+            MyOrdersView(viewModel: container.makeMyOrdersVM())
                 .tabItem {
                     Label(NSLocalizedString("tab_orders", comment: ""), systemImage: "text.page.badge.magnifyingglass")
                 }
             
-            OrderHistoryView()
+            OrderHistoryView(vm: container.makeMyOrdersVM())
                 .tabItem {
                     Label(NSLocalizedString("tab_history", comment: ""), systemImage: "shippingbox.fill")
                 }
             
-            DeliveryLogView()
+            DeliveryLogView(vm: container.makeMyOrdersVM())
                 .tabItem {
                     Label(NSLocalizedString("tab_logs", comment: ""), systemImage: "car.fill")
                 }

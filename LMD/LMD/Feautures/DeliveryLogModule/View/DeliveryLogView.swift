@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct DeliveryLogView: View {
-    @ObservedObject var vm = MyOrdersViewModel()
+    @ObservedObject var vm: MyOrdersViewModel
     
     var body: some View {
         VStack {
