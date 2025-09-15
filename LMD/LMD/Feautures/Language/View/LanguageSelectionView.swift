@@ -28,6 +28,7 @@ struct LanguageSelectionView: View {
             }
         }
         .listStyle(.plain)
+        .environment(\.layoutDirection, languageManager.currentLanguage == .arabic ? .rightToLeft : .leftToRight)
         .navigationTitle(NSLocalizedString("change_language", comment: ""))
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.red, for: .navigationBar)
@@ -42,6 +43,7 @@ struct LanguageSelectionView: View {
                 }
             }
         }
+        
     }
 }
 
