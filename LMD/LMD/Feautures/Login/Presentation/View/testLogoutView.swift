@@ -12,7 +12,10 @@ struct testLogoutView: View {
 
     var body: some View {
         Button{
-            viewModel.logout()
+            Task {
+                try? await viewModel.logout()
+            }
+           // viewModel.logout()
         } label: {
             Text("Logout")
                 .font(.headline)

@@ -62,7 +62,9 @@ struct ProfileView: View {
             }
             
             Button {
-                loginViewModel.logout()
+                Task{
+                    await loginViewModel.logout()
+                }
             } label: {
                 Text(NSLocalizedString("logout", comment: ""))
                     .frame(maxWidth: .infinity)
